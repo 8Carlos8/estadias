@@ -28,4 +28,5 @@ class Estadia extends Model
     {
         return $this->belongsTo(User::class, 'alumno_id');
     }
+    //Agregar la llave pa que se relacione con la empresa con la tabla de los datos dummy XD
 }

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CartaAceptacion extends Model
 {
-    protected $table = 'cartas_aceptacion';
+    protected $table = 'cartas_aceptacions';
 
     protected $fillable = [
         'estadia_id',
@@ -18,7 +18,7 @@ class CartaAceptacion extends Model
     // relación
     public function estadia()
     {
-        return $this->belongsTo(Estadia::class);
+        return $this->belongsTo(Estadia::class); //Agregar el campo de relación
     }
 }
 

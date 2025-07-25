@@ -27,13 +27,14 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::prefix('usuarios')->group(function () {
     Route::post('/registrar', [UsuarioController::class, 'registrarUsuario']);
     Route::post('/login', [UsuarioController::class, 'iniciarSesion']);
-    Route::get('/por-correo/{correo}', [UsuarioController::class, 'obtenerUsuarioPorCorreo']);
-    Route::put('/actualizar-password/{usuario_id}', [UsuarioController::class, 'actualizarPassword']);
-    Route::put('/activar-mfa/{usuario_id}', [UsuarioController::class, 'activarMFA']);
+    Route::post('/por-correo', [UsuarioController::class, 'obtenerUsuarioPorCorreo']);
+    Route::post('/actualizar-password', [UsuarioController::class, 'actualizarPassword']);
+    Route::post('/activar-mfa', [UsuarioController::class, 'activarMFA']);
 });
 
 //Cartas de aceptación
 Route::prefix('cartas')->group(function () {
+    //Corregir las demas rutas
     Route::post('/registrar', [CartaAceptacionController::class, 'registrarCartaAceptacion']);
     Route::get('/por-estadia/{estadia_id}', [CartaAceptacionController::class, 'obtenerCartaAceptacionPorEstadia']);
     Route::put('/{id}', [CartaAceptacionController::class, 'update']);

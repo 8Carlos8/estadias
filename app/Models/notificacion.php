@@ -19,6 +19,6 @@ class Notificacion extends Model
 
     public function usuario()
     {
-        return $this->belongsTo(Usuario::class);
+        return $this->belongsTo(Usuario::class); //Agregar el nombre del campo de la relación
     }
 }

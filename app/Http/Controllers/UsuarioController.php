@@ -8,17 +8,19 @@ use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
+    //Agregar el actualizar, eliminar, buscar por id y listar todos los usuarios
     // registrarUsuario($datos)
     public function registrarUsuario(Request $request)
     {
         $request->validate([
             'nombre' => 'required|string',
             'apellido_paterno' => 'required|string',
+            //Agregar el campo de apellido_materno
             'curp' => 'required|string|size:18|unique:usuarios,curp',
             'correo' => 'required|email|unique:usuarios,correo',
-            'telefono' => 'nullable|string|max:20',
-            'tipo_usuario' => 'required|in:estudiante,docente,admin',
-            'password' => 'required|string|min:6',
+            'telefono' => 'nullable|string|max:20', //10 digitos
+            'tipo_usuario' => 'required|in:estudiante,docente,admin',//Checar si es con numero o con el nombre del rol
+            'password' => 'required|string|min:6',//12 caracteres 
         ]);
 
         $usuario = Usuario::create($request->all());
@@ -44,38 +46,46 @@ class UsuarioController extends Controller
         }
 
         // Si el usuario tiene MFA activado
+        //Comprobar si esta activada
         if ($usuario->mfa) {
             return response()->json([
                 'mensaje' => 'Autenticación multifactor requerida',
-                'mfa' => true
+                'mfa' => true //Logica del envio del codigo de verificación
             ]);
         }
 
+        //Crear el token de la sesión y ya empezar a devolver las propiedades importantes, ID, Nombre, tipo_usuario
         return response()->json([
             'mensaje' => 'Inicio de sesión exitoso',
             'usuario' => $usuario
         ]);
     }
 
-    // obtenerUsuarioPorCorreo($correo)
+    // obtenerUsuarioPorCorreo($correo), cambiar el parametro pa que reciba los request
     public function obtenerUsuarioPorCorreo($correo)
     {
+        //Agregar la parte de la verificación del token pa acceder a las funciones
+        //Agregar la parte del input para que ahi se haga la consulta
         $usuario = Usuario::where('correo', $correo)->first();
 
         if (!$usuario) {
             return response()->json(['mensaje' => 'Usuario no encontrado'], 404);
         }
 
+        //Agregar el nombre al objeto
         return response()->json($usuario);
     }
 
-    // actualizarPassword($usuario_id, $nuevaPassword)
+    // actualizarPassword($usuario_id, $nuevaPassword), quitar el parametro de usuario_id
     public function actualizarPassword(Request $request, $usuario_id)
     {
+        //Agregar la parte de la verificación del token pa acceder a las funciones
+        //Agergar función de solicitar contraseña pa que se envie el código y despues ya acceder a la función de actualizar y aplicar la logica del cambio de contraseña
         $request->validate([
             'nueva_password' => 'required|string|min:6',
         ]);
 
+        //Agregar la parte del input para que ahi se haga la consulta
         $usuario = Usuario::find($usuario_id);
 
         if (!$usuario) {
@@ -88,16 +98,18 @@ class UsuarioController extends Controller
         return response()->json(['mensaje' => 'Contraseña actualizada correctamente']);
     }
 
-    // activarMFA($usuario_id)
+    // activarMFA($usuario_id), cambiar el parametro pa que reciba los request
     public function activarMFA($usuario_id)
     {
+        //Agregar la parte de la verificación del token pa acceder a las funciones
+        //Agregar la parte del input para que ahi se haga la consulta
         $usuario = Usuario::find($usuario_id);
 
         if (!$usuario) {
             return response()->json(['mensaje' => 'Usuario no encontrado'], 404);
         }
 
-        $usuario->mfa = 'activo'; // puedes usar un código, booleano, o 'activo'
+        $usuario->mfa = 'activo'; // puedes usar un código, booleano, o 'activo', True
         $usuario->save();
 
         return response()->json(['mensaje' => 'MFA activado para el usuario']);

@@ -122,7 +122,7 @@ class CartasPresentacionController extends Controller
             return response()->json(['message' => 'Carta no encontrada'], 404);
         }
 
-        //Cambiar el estadp en la parte del seguimiento del tramite
+        //Cambiar el estado en la parte del seguimiento del tramite
         $cartaPres->firmada_director = true;
         $cartaPres->save();
 
