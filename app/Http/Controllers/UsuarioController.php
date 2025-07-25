@@ -11,6 +11,7 @@ class UsuarioController extends Controller
     // registrarUsuario($datos)
     public function registrarUsuario(Request $request)
     {
+
         $request->validate([
             'nombre' => 'required|string',
             'apellido_paterno' => 'required|string',
