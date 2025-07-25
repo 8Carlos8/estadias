@@ -2,10 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class carta_aceptacion extends Model
+class CartaAceptacion extends Model
 {
-    use HasFactory;
+    protected $table = 'cartas_aceptacion';
+
+    protected $fillable = [
+        'estadia_id',
+        'fecha_recepcion',
+        'ruta_documento',
+        'observaciones',
+    ];
+
+    // relación
+    public function estadia()
+    {
+        return $this->belongsTo(Estadia::class);
+    }
 }
+
