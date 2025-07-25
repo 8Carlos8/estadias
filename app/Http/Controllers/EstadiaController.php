@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Estadia;
+use App\Models\Estadia_seguimiento;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Validator;
-use App\Models\User;
 
 class EstadiaController extends Controller
 {
@@ -13,10 +15,12 @@ class EstadiaController extends Controller
     public function register(Request $request)
     {
 
+        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
+            */
 
         $validator = Validator::make($request->all(), [
             'alumno_id' => 'required|integer',
@@ -27,7 +31,6 @@ class EstadiaController extends Controller
             'fecha_inicio' => 'required|date',
             'fecha_fin' => 'required|date',
             'apoyo' => 'required|string',
-            'estatus' => 'required|integer',
         ]);
 
         //Si la validación falla, devolver un error
@@ -48,19 +51,31 @@ class EstadiaController extends Controller
             'fecha_inicio' => $request->fecha_inicio,
             'fecha_fin' => $request->fecha_fin,
             'apoyo' => $request->apoyo,
-            'estatus' => $request->estatus,
+            'estatus' => 'solicitada',
         ]);
 
-        return response()->json(['message' => 'Estadia registrada con éxito', 'estadia' => $estadia], 201);
+        // 2. Crear seguimiento inicial
+        Estadia_seguimiento::create([
+            'estadia_id' => $estadia->id,
+            'etapa' => 'solicitud',
+            'estatus' => 'pendiente',
+            'comentario' => 'Seguimiento inicial generado automáticamente',
+            'fecha_actualizacion' => now(),
+            'actualizado_por' => 2, //Cmbiar esto por el campo del id
+        ]);
+
+        return response()->json(['message' => 'Estadia registrada con éxito y seguimiento inicial creado', 'estadia' => $estadia], 201);
     }
 
     public function update(Request $request)
     {
 
+        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
+            */
 
         $estadia = Estadia::find($request->input('id'));
 
@@ -75,10 +90,12 @@ class EstadiaController extends Controller
     public function delete(Request $request)
     {
 
+        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
+            */
 
         $estadia = Estadia::find($request->input('id'));
 
@@ -92,12 +109,14 @@ class EstadiaController extends Controller
 
     public function verEstadia(Request $request)
     {
+        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
+            */
 
-        $id = $request->input($id);
+        $id = $request->input('id');
 
         $estadia = Estadia::find($id);
         if(!$estadia){
@@ -107,12 +126,14 @@ class EstadiaController extends Controller
         return response()->json(['estadia' => $estadia], 200);
     }
 
-    public function listaestadias(Request $request)
+    public function listaEstadias(Request $request)
     {
+        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
+            */
 
         try {
             $estadias = Estadia::all();
