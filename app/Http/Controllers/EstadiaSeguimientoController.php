@@ -10,7 +10,7 @@ class EstadiaSeguimientoController extends Controller
     {
         $token = $request->input('token');
         if(!$this->validateToken($token)){
-            return response()->json(['message' =< 'Token inválido'], 401);
+            return response()->json(['message' => 'Token inválido'], 401);
         }
 
         $validator = Validator::make($request->all(), [
@@ -46,7 +46,7 @@ class EstadiaSeguimientoController extends Controller
     {
         $token = $request->input('token');
         if(!$this->validateToken($token)){
-            return response()->json(['message' =< 'Token inválido'], 401);
+            return response()->json(['message' => 'Token inválido'], 401);
         }
 
         $seguimiento = Estadia_seguimiento::find($request->input('id'));

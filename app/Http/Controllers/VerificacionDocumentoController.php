@@ -16,7 +16,7 @@ class VerificacionDocumentoController extends Controller
         $validator = Validator::make($request->all(), [
             'usuario_id' => 'required|integer',
             'tipo_validacion' => 'required|integer',
-            'resultado' => '',
+            //'resultado' => '',
             'fecha_validacion'=> 'required|date',
             'observaciones' => 'required|string',
         ]);
@@ -32,7 +32,7 @@ class VerificacionDocumentoController extends Controller
         $verificacion = Verificacion_documento::create([
             'usuario_id' => $request->usuario_id,
             'tipo_validacion' => $request->tipo_validacion,
-            'resultado' => $request->resultado,
+            'resultado' => true,
             'fecha_validacion' => $request->fecha_validacion,
             'observaciones' => $request->observaciones,
         ]);
