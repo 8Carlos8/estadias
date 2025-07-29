@@ -8,23 +8,25 @@ use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
-    //Agregar el actualizar, eliminar, buscar por id y listar todos los usuarios
-    // registrarUsuario($datos)
+   
+    //  registrarUsuario($datos)
     public function registrarUsuario(Request $request)
     {
-
         $request->validate([
             'nombre' => 'required|string',
             'apellido_paterno' => 'required|string',
-            //Agregar el campo de apellido_materno
+            'apellido_materno' => 'required|string',
             'curp' => 'required|string|size:18|unique:usuarios,curp',
             'correo' => 'required|email|unique:usuarios,correo',
-            'telefono' => 'nullable|string|max:20', //10 digitos
-            'tipo_usuario' => 'required|in:estudiante,docente,admin',//Checar si es con numero o con el nombre del rol
-            'password' => 'required|string|min:6',//12 caracteres 
+            'telefono' => 'nullable|string|max:20',
+            'tipo_usuario' => 'required|in:estudiante,docente,admin',
+            'password' => 'required|string|min:6',
         ]);
 
-        $usuario = Usuario::create($request->all());
+        $datos = $request->all();
+        $datos['password'] = bcrypt($datos['password']);
+
+        $usuario = Usuario::create($datos);
 
         return response()->json([
             'mensaje' => 'Usuario registrado correctamente',
@@ -32,7 +34,7 @@ class UsuarioController extends Controller
         ], 201);
     }
 
-    // iniciarSesion($correo, $password)
+    //  iniciarSesion($correo, $password)
     public function iniciarSesion(Request $request)
     {
         $request->validate([
@@ -46,73 +48,120 @@ class UsuarioController extends Controller
             return response()->json(['mensaje' => 'Credenciales inválidas'], 401);
         }
 
-        // Si el usuario tiene MFA activado
-        //Comprobar si esta activada
         if ($usuario->mfa) {
             return response()->json([
                 'mensaje' => 'Autenticación multifactor requerida',
-                'mfa' => true //Logica del envio del codigo de verificación
+                'mfa' => true
             ]);
         }
 
-        //Crear el token de la sesión y ya empezar a devolver las propiedades importantes, ID, Nombre, tipo_usuario
+        
+
         return response()->json([
             'mensaje' => 'Inicio de sesión exitoso',
-            'usuario' => $usuario
+            'usuario' => [
+                'id' => $usuario->id,
+                'nombre' => $usuario->nombre,
+                'tipo_usuario' => $usuario->tipo_usuario,
+                
+            ]
         ]);
     }
 
-    // obtenerUsuarioPorCorreo($correo), cambiar el parametro pa que reciba los request
-    public function obtenerUsuarioPorCorreo($correo)
+    //  obtenerUsuarioPorCorreo 
+    public function obtenerUsuarioPorCorreo(Request $request)
     {
-        //Agregar la parte de la verificación del token pa acceder a las funciones
-        //Agregar la parte del input para que ahi se haga la consulta
-        $usuario = Usuario::where('correo', $correo)->first();
+        $request->validate([
+            'correo' => 'required|email'
+        ]);
+
+        $usuario = Usuario::where('correo', $request->correo)->first();
 
         if (!$usuario) {
             return response()->json(['mensaje' => 'Usuario no encontrado'], 404);
         }
 
-        //Agregar el nombre al objeto
         return response()->json($usuario);
     }
 
-    // actualizarPassword($usuario_id, $nuevaPassword), quitar el parametro de usuario_id
-    public function actualizarPassword(Request $request, $usuario_id)
+    //  actualizarPassword 
+    public function actualizarPassword(Request $request)
     {
-        //Agregar la parte de la verificación del token pa acceder a las funciones
-        //Agergar función de solicitar contraseña pa que se envie el código y despues ya acceder a la función de actualizar y aplicar la logica del cambio de contraseña
         $request->validate([
+            'usuario_id' => 'required|exists:usuarios,id',
             'nueva_password' => 'required|string|min:6',
         ]);
 
-        //Agregar la parte del input para que ahi se haga la consulta
-        $usuario = Usuario::find($usuario_id);
-
-        if (!$usuario) {
-            return response()->json(['mensaje' => 'Usuario no encontrado'], 404);
-        }
-
-        $usuario->password = $request->nueva_password; // Hashea por el mutador
+        $usuario = Usuario::find($request->usuario_id);
+        $usuario->password = bcrypt($request->nueva_password);
         $usuario->save();
 
         return response()->json(['mensaje' => 'Contraseña actualizada correctamente']);
     }
 
-    // activarMFA($usuario_id), cambiar el parametro pa que reciba los request
-    public function activarMFA($usuario_id)
+    //  activarMFA 
+    public function activarMFA(Request $request)
     {
-        //Agregar la parte de la verificación del token pa acceder a las funciones
-        //Agregar la parte del input para que ahi se haga la consulta
-        $usuario = Usuario::find($usuario_id);
+        $request->validate([
+            'usuario_id' => 'required|exists:usuarios,id'
+        ]);
 
-        if (!$usuario) {
-            return response()->json(['mensaje' => 'Usuario no encontrado'], 404);
-        }
-
-        $usuario->mfa = 'activo'; // puedes usar un código, booleano, o 'activo', True
+        $usuario = Usuario::find($request->usuario_id);
+        $usuario->mfa = true;
         $usuario->save();
 
         return response()->json(['mensaje' => 'MFA activado para el usuario']);
+    }
+
+    //  actualizar usuario
+    public function actualizarUsuario(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:usuarios,id',
+            'nombre' => 'nullable|string',
+            'apellido_paterno' => 'nullable|string',
+            'apellido_materno' => 'nullable|string',
+            'telefono' => 'nullable|string|max:20',
+            'tipo_usuario' => 'nullable|in:estudiante,docente,admin',
+        ]);
+
+        $usuario = Usuario::find($request->id);
+        $usuario->update($request->only([
+            'nombre', 'apellido_paterno', 'apellido_materno',
+            'telefono', 'tipo_usuario'
+        ]));
+
+        return response()->json(['mensaje' => 'Usuario actualizado correctamente', 'usuario' => $usuario]);
+    }
+
+    //  eliminar usuario
+    public function eliminarUsuario(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:usuarios,id'
+        ]);
+
+        $usuario = Usuario::find($request->id);
+        $usuario->delete();
+
+        return response()->json(['mensaje' => 'Usuario eliminado correctamente']);
+    }
+
+    //  obtener usuario por ID
+    public function obtenerUsuarioPorId(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:usuarios,id'
+        ]);
+
+        $usuario = Usuario::find($request->id);
+        return response()->json($usuario);
+    }
+
+    //  listar todos los usuarios
+    public function listarUsuarios()
+    {
+        $usuarios = Usuario::orderBy('nombre')->get();
+        return response()->json($usuarios);
     }
 }

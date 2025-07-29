@@ -1,17 +1,17 @@
 <?php
 
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CartaAceptacion;
+use App\Models\Estadia;
 
 class CartaAceptacionController extends Controller
 {
-    //listar todos las cartas
+    
+
     /**
-     * Guarda la carta de aceptación recibida por parte de la empresa.
-     * Equivalente a: registrarCartaAceptacion($datos)
+     *  Guarda la carta de aceptación recibida por parte de la empresa.
      */
     public function registrarCartaAceptacion(Request $request)
     {
@@ -31,14 +31,15 @@ class CartaAceptacionController extends Controller
     }
 
     /**
-     * Devuelve la carta de aceptación vinculada a una estadía.
-     * Equivalente a: obtenerCartaAceptacionPorEstadia($estadia_id), cambiar los parametro pa que se reciban lo del request
+     *  Devuelve la carta de aceptación vinculada a una estadía (por Request)
      */
-    public function obtenerCartaAceptacionPorEstadia($estadia_id)
+    public function obtenerCartaAceptacionPorEstadia(Request $request)
     {
-        //Agregar la parte de la verificación del token pa acceder a las funciones
-        //Agregar la parte del input para que ahi se haga la consulta
-        $carta = CartaAceptacion::where('estadia_id', $estadia_id)->first();
+        $request->validate([
+            'estadia_id' => 'required|exists:estadias,id'
+        ]);
+
+        $carta = CartaAceptacion::where('estadia_id', $request->estadia_id)->first();
 
         if (!$carta) {
             return response()->json([
@@ -46,30 +47,25 @@ class CartaAceptacionController extends Controller
             ], 404);
         }
 
-        //Agregar el nombre al objeto
-        return response()->json($carta, 200);
+
+        return response()->json($carta);
     }
 
     /**
-     * Actualiza una carta de aceptación por su ID. quitar el parametro id
+     *  Actualiza una carta de aceptación
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //Agregar la parte de la verificación del token pa acceder a las funciones
-        //Agregar la parte del input para que ahi se haga la consulta
-        $carta = CartaAceptacion::find($id);
-
-        if (!$carta) {
-            return response()->json(['mensaje' => 'Carta no encontrada'], 404);
-        }
-
         $request->validate([
-            'fecha_recepcion' => 'date',
-            'ruta_documento' => 'string|max:255',
+            'id' => 'required|exists:cartas_aceptacion,id',
+            'fecha_recepcion' => 'nullable|date',
+            'ruta_documento' => 'nullable|string|max:255',
             'observaciones' => 'nullable|string',
         ]);
 
-        $carta->update($request->all());
+        $carta = CartaAceptacion::find($request->id);
+
+        $carta->update($request->only(['fecha_recepcion', 'ruta_documento', 'observaciones']));
 
         return response()->json([
             'mensaje' => 'Carta actualizada correctamente',
@@ -78,21 +74,28 @@ class CartaAceptacionController extends Controller
     }
 
     /**
-     * Elimina una carta de aceptación por su ID. cambiar los parametro pa que se reciban lo del request
+     *  Elimina una carta de aceptación por ID desde request
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //Agregar la parte de la verificación del token pa acceder a las funciones
-        //Agregar la parte del input para que ahi se haga la consulta
-        $carta = CartaAceptacion::find($id);
+        $request->validate([
+            'id' => 'required|exists:cartas_aceptacion,id'
+        ]);
 
-        if (!$carta) {
-            return response()->json(['mensaje' => 'Carta no encontrada'], 404);
-        }
-
+        $carta = CartaAceptacion::find($request->id);
         $carta->delete();
 
         return response()->json(['mensaje' => 'Carta eliminada correctamente']);
     }
+    /**
+     *  Listar todas las cartas
+     */
+    public function listarTodas()
+    {
+        $cartas = CartaAceptacion::orderByDesc('fecha_recepcion')->get();
+
+        return response()->json($cartas);
+    }
+
 }
 

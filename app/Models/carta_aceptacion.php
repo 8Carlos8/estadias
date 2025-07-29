@@ -8,17 +8,17 @@ class CartaAceptacion extends Model
 {
     protected $table = 'cartas_aceptacions';
 
-    protected $fillable = [
+     protected $fillable = [
         'estadia_id',
         'fecha_recepcion',
         'ruta_documento',
         'observaciones',
     ];
 
-    // relación
+    //  Relación
     public function estadia()
     {
-        return $this->belongsTo(Estadia::class); //Agregar el campo de relación
+        return $this->belongsTo(Estadia::class, 'estadia_id');
     }
 }
 

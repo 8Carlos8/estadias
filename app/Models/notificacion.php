@@ -18,7 +18,7 @@ class Notificacion extends Model
     ];
 
     public function usuario()
-    {
-        return $this->belongsTo(Usuario::class); //Agregar el nombre del campo de la relación
-    }
+{
+    return $this->belongsTo(Usuario::class, 'usuario_id');
+}
 }

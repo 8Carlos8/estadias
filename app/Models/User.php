@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Usuario extends Model
 {
-    //protected $table = 'usuarios';
+   
 
     protected $fillable = [
         'nombre',
@@ -22,11 +22,20 @@ class Usuario extends Model
 
     protected $hidden = ['password'];
 
-    // Mutador para encriptar automáticamente la contraseña si se asigna
+    protected $casts = [
+        'mfa' => 'boolean',
+    ];
+
+    /**
+     * Mutador para encriptar automáticamente la contraseña
+     */
     public function setPasswordAttribute($value)
     {
-        if ($value) {
+        
+        if ($value && !preg_match('/^\$2y\$/', $value)) {
             $this->attributes['password'] = bcrypt($value);
+        } else {
+            $this->attributes['password'] = $value;
         }
     }
 }

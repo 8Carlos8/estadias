@@ -4,20 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Notificacion;
+use App\Models\Usuario;
 
 class NotificacionController extends Controller
 {
-    //Agregar el actualizar, eliminar, buscar por id y listar todas las notificaciones
-    // ● crearNotificacion($datos)
+
+    //  Crear notificación
     public function crearNotificacion(Request $request)
     {
-        //Agregar la parte de la verificación del token pa acceder a las funciones
         $request->validate([
             'usuario_id' => 'required|exists:usuarios,id',
             'tipo' => 'required|in:correo,sms,wearable,app',
             'mensaje' => 'required|string',
             'fecha_envio' => 'required|date',
-            'prioridad' => 'required|in:alta,media,baja',//Checar si es con numero o con el nombre del rol
+            'prioridad' => 'required|in:alta,media,baja',
         ]);
 
         $notificacion = Notificacion::create([
@@ -35,35 +35,105 @@ class NotificacionController extends Controller
         ], 201);
     }
 
-    // ● obtenerNotificacionesUsuario($usuario_id) cambiar el parametro pa que reciba los request
-    public function obtenerNotificacionesUsuario($usuario_id)
+    //  Obtener notificaciones por usuario desde request
+    public function obtenerNotificacionesUsuario(Request $request)
     {
-        //Agregar la parte de la verificación del token pa acceder a las funciones
-        //Agregar la parte del input para que ahi se haga la consulta
-        $notificaciones = Notificacion::where('usuario_id', $usuario_id)->orderByDesc('fecha_envio')->get();
+        $request->validate([
+            'usuario_id' => 'required|exists:usuarios,id'
+        ]);
 
-        //Validación si existe la notificación (if)
+        $notificaciones = Notificacion::where('usuario_id', $request->usuario_id)
+            ->orderByDesc('fecha_envio')
+            ->get();
 
-        //Agregar el nombre al objeto
+        if ($notificaciones->isEmpty()) {
+            return response()->json(['mensaje' => 'No se encontraron notificaciones para el usuario.'], 404);
+        }
+
+        // Agregar nombre del usuario a cada notificación 
+        $usuario = Usuario::find($request->usuario_id);
+        $notificaciones->each(function ($notificacion) use ($usuario) {
+            $notificacion->nombre_usuario = $usuario->nombre . ' ' . $usuario->apellido_paterno;
+        });
+
         return response()->json($notificaciones);
     }
 
-    // ● marcarNotificacionLeida($notificacion_id) cambiar el parametro pa que reciba los request
-    public function marcarNotificacionLeida($id)
+    // Marcar notificación como leída
+    public function marcarNotificacionLeida(Request $request)
     {
-        //Agregar la parte de la verificación del token pa acceder a las funciones
-        //Agregar la parte del input para que ahi se haga la consulta
+        $request->validate([
+            'id' => 'required|exists:notificaciones,id'
+        ]);
+
+        $notificacion = Notificacion::find($request->id);
+        $notificacion->leida = true;
+        $notificacion->save();
+
+        return response()->json([
+            'mensaje' => 'Notificación marcada como leída',
+            'notificacion' => $notificacion
+        ]);
+    }
+
+    //  Buscar notificación por ID
+    public function obtenerNotificacionPorId($id)
+    {
         $notificacion = Notificacion::find($id);
 
         if (!$notificacion) {
             return response()->json(['mensaje' => 'Notificación no encontrada'], 404);
         }
 
-        $notificacion->update(['leida' => true]);
+        return response()->json($notificacion);
+    }
+
+    //  Actualizar notificación
+    public function update(Request $request, $id)
+    {
+        $notificacion = Notificacion::find($id);
+
+        if (!$notificacion) {
+            return response()->json(['mensaje' => 'Notificación no encontrada'], 404);
+        }
+
+        $request->validate([
+            'tipo' => 'in:correo,sms,wearable,app',
+            'mensaje' => 'string|nullable',
+            'fecha_envio' => 'date|nullable',
+            'prioridad' => 'in:alta,media,baja',
+            'leida' => 'boolean'
+        ]);
+
+        $notificacion->update($request->only([
+            'tipo', 'mensaje', 'fecha_envio', 'prioridad', 'leida'
+        ]));
 
         return response()->json([
-            'mensaje' => 'Notificación marcada como leída',
+            'mensaje' => 'Notificación actualizada',
             'notificacion' => $notificacion
         ]);
+    }
+
+    //  Eliminar notificación
+    public function destroy($id)
+    {
+        $notificacion = Notificacion::find($id);
+
+        if (!$notificacion) {
+            return response()->json(['mensaje' => 'Notificación no encontrada'], 404);
+        }
+
+        $notificacion->delete();
+
+        return response()->json(['mensaje' => 'Notificación eliminada']);
+    }
+
+    //  Listar todas las notificaciones
+    public function listarTodas()
+    {
+        $notificaciones = Notificacion::orderByDesc('fecha_envio')->get();
+
+        return response()->json($notificaciones);
     }
 }
