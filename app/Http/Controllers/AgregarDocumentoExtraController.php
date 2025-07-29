@@ -65,8 +65,6 @@ class AgregarDocumentoExtraController extends Controller
             return response()->json(['message' => 'Documento no encontrado'], 404);
         }
 
-        //Checar si se deja las validaciones de los datos y sino quitar eso y dejar lo demas como estaba XDXD
-        /*
         $validator = Validator::make($request->all(), [
             'nombre'       => 'sometimes|string',
             'ruta'         => 'sometimes|file',  // opcional
@@ -80,7 +78,6 @@ class AgregarDocumentoExtraController extends Controller
                 'errors'  => $validator->errors(),
             ], 422);
         }
-            */
 
         // Si hay archivo nuevo
         if ($request->hasFile('ruta')) {

@@ -91,8 +91,6 @@ class CartasPresentacionController extends Controller
             return response()->json(['message' => 'Carta de presentación no encontrada'], 404);
         }
 
-        //Checar si se deja las validaciones de los datos y sino quitar eso y dejar lo demas como estaba XDXD
-        /*
         $validator = Validator::make($request->all(), [
             'estadia_id' => 'sometimes|integer',
             'tutor_id' => 'sometimes|integer',
@@ -107,7 +105,6 @@ class CartasPresentacionController extends Controller
                 'errors' => $validator->errors(),
             ], 422);
         }
-            */
 
         // Si hay un archivo nuevo, lo almacenamos, comprobar esto ya que creo que no funciona XDXD
         if ($request->hasFile('ruta_documento')) {
@@ -201,8 +198,6 @@ class CartasPresentacionController extends Controller
             return response()->json(['message' => 'Carta no encontrada'], 404);
         }
 
-        //Checar si se deja las validaciones de los datos y sino quitar eso y dejar lo demas como estaba XDXD
-        /*
         $validator = Validator::make($request->all(), [
             'ruta_documento' => 'sometimes|file',
         ]);
@@ -214,7 +209,6 @@ class CartasPresentacionController extends Controller
                 'errors' => $validator->errors(),
             ], 422);
         }
-            */
 
         // Si hay un archivo nuevo, lo almacenamos, comprobar esto ya que creo que no funciona XDXD
         if ($request->hasFile('ruta_documento')) {

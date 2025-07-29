@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
+    //Agregar la función del Token y validar en todas las funciones
    
     //  registrarUsuario($datos)
     public function registrarUsuario(Request $request)
@@ -16,11 +17,11 @@ class UsuarioController extends Controller
             'nombre' => 'required|string',
             'apellido_paterno' => 'required|string',
             'apellido_materno' => 'required|string',
-            'curp' => 'required|string|size:18|unique:usuarios,curp',
+            'curp' => 'required|string|size:18|unique:usuarios,curp',//Limite 18
             'correo' => 'required|email|unique:usuarios,correo',
-            'telefono' => 'nullable|string|max:20',
+            'telefono' => 'nullable|string|max:20', //Limite 10
             'tipo_usuario' => 'required|in:estudiante,docente,admin',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:6', //Limite 12
         ]);
 
         $datos = $request->all();
@@ -55,8 +56,6 @@ class UsuarioController extends Controller
             ]);
         }
 
-        
-
         return response()->json([
             'mensaje' => 'Inicio de sesión exitoso',
             'usuario' => [
@@ -89,10 +88,10 @@ class UsuarioController extends Controller
     {
         $request->validate([
             'usuario_id' => 'required|exists:usuarios,id',
-            'nueva_password' => 'required|string|min:6',
+            'nueva_password' => 'required|string|min:6', //Limite 12
         ]);
 
-        $usuario = Usuario::find($request->usuario_id);
+        $usuario = Usuario::find($request->usuario_id); //If pa que se compruebe si existe el usuario
         $usuario->password = bcrypt($request->nueva_password);
         $usuario->save();
 
@@ -106,14 +105,14 @@ class UsuarioController extends Controller
             'usuario_id' => 'required|exists:usuarios,id'
         ]);
 
-        $usuario = Usuario::find($request->usuario_id);
+        $usuario = Usuario::find($request->usuario_id);//If pa que se compruebe si existe el usuario
         $usuario->mfa = true;
         $usuario->save();
 
         return response()->json(['mensaje' => 'MFA activado para el usuario']);
     }
 
-    //  actualizar usuario
+    //  actualizar usuario, actualizar todos los campos
     public function actualizarUsuario(Request $request)
     {
         $request->validate([
@@ -125,13 +124,14 @@ class UsuarioController extends Controller
             'tipo_usuario' => 'nullable|in:estudiante,docente,admin',
         ]);
 
+        //If pa que se compruebe si existe el usuario
         $usuario = Usuario::find($request->id);
         $usuario->update($request->only([
             'nombre', 'apellido_paterno', 'apellido_materno',
             'telefono', 'tipo_usuario'
         ]));
 
-        return response()->json(['mensaje' => 'Usuario actualizado correctamente', 'usuario' => $usuario]);
+        return response()->json(['mensaje' => 'Usuario actualizado correctamente', 'usuario' => $usuario]); //Codigo de operación 200
     }
 
     //  eliminar usuario
@@ -142,9 +142,10 @@ class UsuarioController extends Controller
         ]);
 
         $usuario = Usuario::find($request->id);
+        //If pa que se compruebe si existe el usuario
         $usuario->delete();
 
-        return response()->json(['mensaje' => 'Usuario eliminado correctamente']);
+        return response()->json(['mensaje' => 'Usuario eliminado correctamente']);//Codigo de operación 200
     }
 
     //  obtener usuario por ID
@@ -155,13 +156,14 @@ class UsuarioController extends Controller
         ]);
 
         $usuario = Usuario::find($request->id);
-        return response()->json($usuario);
+        //If pa que se compruebe si existe el usuario
+        return response()->json($usuario);//Codigo de operación 200, nombre del objeto
     }
 
-    //  listar todos los usuarios
+    //  listar todos los usuarios por filtro, agregar la función pa listar los usuarios por id, cambiar los parametro pa que se reciban lo del request
     public function listarUsuarios()
     {
         $usuarios = Usuario::orderBy('nombre')->get();
-        return response()->json($usuarios);
+        return response()->json($usuarios);//Codigo de operación 200, nombre del array
     }
 }

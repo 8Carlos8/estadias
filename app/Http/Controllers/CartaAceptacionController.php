@@ -8,8 +8,6 @@ use App\Models\Estadia;
 
 class CartaAceptacionController extends Controller
 {
-    
-
     /**
      *  Guarda la carta de aceptación recibida por parte de la empresa.
      */
@@ -47,8 +45,7 @@ class CartaAceptacionController extends Controller
             ], 404);
         }
 
-
-        return response()->json($carta);
+        return response()->json($carta); //Nombre del objeto y el codigo de operacioón
     }
 
     /**
@@ -63,14 +60,14 @@ class CartaAceptacionController extends Controller
             'observaciones' => 'nullable|string',
         ]);
 
-        $carta = CartaAceptacion::find($request->id);
+        $carta = CartaAceptacion::find($request->id);//If pa que se compruebe si existe la carta
 
         $carta->update($request->only(['fecha_recepcion', 'ruta_documento', 'observaciones']));
 
         return response()->json([
             'mensaje' => 'Carta actualizada correctamente',
-            'carta' => $carta
-        ]);
+            'carta' => $carta 
+        ]);//Codigo de operación 200
     }
 
     /**
@@ -82,19 +79,20 @@ class CartaAceptacionController extends Controller
             'id' => 'required|exists:cartas_aceptacion,id'
         ]);
 
-        $carta = CartaAceptacion::find($request->id);
+        $carta = CartaAceptacion::find($request->id); //If pa que se compruebe si existe la carta
         $carta->delete();
 
-        return response()->json(['mensaje' => 'Carta eliminada correctamente']);
+        return response()->json(['mensaje' => 'Carta eliminada correctamente']); //Codigo de operación
     }
     /**
      *  Listar todas las cartas
      */
+    //Agregar la función pa que liste las cartas sin filtro, el orden del id, cambiar los parametro pa que se reciban lo del request
     public function listarTodas()
     {
         $cartas = CartaAceptacion::orderByDesc('fecha_recepcion')->get();
 
-        return response()->json($cartas);
+        return response()->json($cartas); //Nombre del array
     }
 
 }

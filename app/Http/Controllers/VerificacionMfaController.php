@@ -8,16 +8,16 @@ use Carbon\Carbon;
 
 class VerificacionMFAController extends Controller
 {
-    // generarCodigoMFA($usuario_id, $metodo)
+    // generarCodigoMFA($usuario_id, $metodo), agregar la logica del envio a los metodos
     public function generarCodigo(Request $request)
     {
         $request->validate([
             'usuario_id' => 'required|exists:usuarios,id',
-            'metodo' => 'required|in:correo,wearable,app',
+            'metodo' => 'required|in:correo,wearable,app', //whatsapp y correo
         ]);
 
         $codigo = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-        $validoHasta = Carbon::now()->addMinutes(10); // Código válido por 10 min
+        $validoHasta = Carbon::now()->addMinutes(10); // Código válido por 5 min
 
         $verificacion = VerificacionMFA::create([
             'usuario_id' => $request->usuario_id,
@@ -30,7 +30,7 @@ class VerificacionMFAController extends Controller
         return response()->json([
             'mensaje' => 'Código MFA generado',
             'codigo' => $codigo,
-            'verificacion' => $verificacion
+            'verificacion' => $verificacion //Codigo de operación 201
         ]);
     }
 
@@ -56,7 +56,7 @@ class VerificacionMFAController extends Controller
         $verificacion->verificado = true;
         $verificacion->save();
 
-        return response()->json(['mensaje' => 'Código verificado correctamente']);
+        return response()->json(['mensaje' => 'Código verificado correctamente']); //Codigo de operación 200
     }
 
     // obtenerUltimaVerificacionMFA($usuario_id)
@@ -75,13 +75,6 @@ class VerificacionMFAController extends Controller
             return response()->json(['mensaje' => 'No hay códigos pendientes'], 404);
         }
 
-        return response()->json($verificacion);
-    }
-
-    // listar todas
-    public function listar()
-    {
-        $verificaciones = VerificacionMFA::with('usuario')->orderByDesc('valido_hasta')->get();
-        return response()->json($verificaciones);
+        return response()->json($verificacion); //Codigo de operación 200
     }
 }

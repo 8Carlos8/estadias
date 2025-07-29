@@ -8,7 +8,6 @@ use App\Models\Usuario;
 
 class NotificacionController extends Controller
 {
-
     //  Crear notificación
     public function crearNotificacion(Request $request)
     {
@@ -76,22 +75,22 @@ class NotificacionController extends Controller
         ]);
     }
 
-    //  Buscar notificación por ID
+    //  Buscar notificación por ID, cambiar los parametro pa que se reciban lo del request
     public function obtenerNotificacionPorId($id)
     {
-        $notificacion = Notificacion::find($id);
+        $notificacion = Notificacion::find($id);//no recibir el id si no el input
 
         if (!$notificacion) {
             return response()->json(['mensaje' => 'Notificación no encontrada'], 404);
         }
 
-        return response()->json($notificacion);
+        return response()->json($notificacion); //Agregar el nombre del objeto y el codigo de operación
     }
 
-    //  Actualizar notificación
+    //  Actualizar notificación, quitar el paranetro id
     public function update(Request $request, $id)
     {
-        $notificacion = Notificacion::find($id);
+        $notificacion = Notificacion::find($id); //no recibir el id si no el input
 
         if (!$notificacion) {
             return response()->json(['mensaje' => 'Notificación no encontrada'], 404);
@@ -111,14 +110,14 @@ class NotificacionController extends Controller
 
         return response()->json([
             'mensaje' => 'Notificación actualizada',
-            'notificacion' => $notificacion
+            'notificacion' => $notificacion //Codigo de operación 200
         ]);
     }
 
-    //  Eliminar notificación
+    //  Eliminar notificación, cambiar los parametro pa que se reciban lo del request
     public function destroy($id)
     {
-        $notificacion = Notificacion::find($id);
+        $notificacion = Notificacion::find($id); //no recibir el id si no el input
 
         if (!$notificacion) {
             return response()->json(['mensaje' => 'Notificación no encontrada'], 404);
@@ -126,10 +125,10 @@ class NotificacionController extends Controller
 
         $notificacion->delete();
 
-        return response()->json(['mensaje' => 'Notificación eliminada']);
+        return response()->json(['mensaje' => 'Notificación eliminada']); //Codigo de operación 200
     }
 
-    //  Listar todas las notificaciones
+    //  Listar todas las notificaciones, cambiar los parametro pa que se reciban lo del request, listar las notificaciones por id
     public function listarTodas()
     {
         $notificaciones = Notificacion::orderByDesc('fecha_envio')->get();
