@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Verificacion_documento;
 use Illuminate\Http\Request;
+use Laravel\Sanctum\PersonalAccessToken;
+use Illuminate\Support\Facades\Validator;
+use App\Models\User;
 
 class VerificacionDocumentoController extends Controller
 {
     public function register(Request $request)
     {
+        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
+            */
 
         $validator = Validator::make($request->all(), [
             'usuario_id' => 'required|integer',
@@ -42,10 +48,12 @@ class VerificacionDocumentoController extends Controller
 
     public function update(Request $request)
     {
+        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
+            */
 
         $verificacion = Verificacion_documento::find($request->input('id'));
 
@@ -59,10 +67,12 @@ class VerificacionDocumentoController extends Controller
 
     public function delete(Request $request)
     {
+        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
+            */
 
         $verificacion = Verificacion_documento::find($request->input('id'));
 
@@ -76,10 +86,12 @@ class VerificacionDocumentoController extends Controller
 
     public function verVerificacion(Request $request)
     {
+        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
+            */
 
         $id = $request->input('id');
 
@@ -93,10 +105,12 @@ class VerificacionDocumentoController extends Controller
 
     public function listaVerificaciones(Request $request)
     {
+        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
+            */
 
         try {
             $verificaciones = Verificacion_documento::all();
@@ -109,10 +123,12 @@ class VerificacionDocumentoController extends Controller
 
     public function VerificacionesUsuario(Request $request)
     {
+        /*
         $token = $request->input('token');
         if (!$this->validateToken($token)) {
             return response()->json(['message' => 'Token inválido'], 401);
         }
+            */
 
         $usuario_id = $request->input('usuario_id');
 

@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RegistrarIncidencia;
+use App\Models\Estadia;
 use Illuminate\Http\Request;
+use Laravel\Sanctum\PersonalAccessToken;
+use Illuminate\Support\Facades\Validator;
 
 class RegistrarIncidenciaController extends Controller
 {
     public function register(Request $request)
     {
+        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
+            */
 
         $validator = Validator::make($request->all(), [
             'estadia_id' => 'required|integer',
@@ -38,10 +44,12 @@ class RegistrarIncidenciaController extends Controller
 
     public function update(Request $request)
     {
+        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
+            */
 
         $incidencia = RegistrarIncidencia::find($request->input('id'));
 
@@ -55,12 +63,16 @@ class RegistrarIncidenciaController extends Controller
 
     public function delete(Request $request)
     {
+        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
+            */
 
-        $incidencia = RegistrarIncidencia::find($request->input('íd'));
+        $id = $request->input('id');
+
+        $incidencia = RegistrarIncidencia::find($id);
 
         if(!$incidencia){
             return response()->json(['message' => 'Incidencia no encontrada'], 404);
@@ -72,10 +84,12 @@ class RegistrarIncidenciaController extends Controller
 
     public function verIncidencia(Request $request)
     {
+        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
+            */
 
         $id = $request->input('id');
 
@@ -90,10 +104,12 @@ class RegistrarIncidenciaController extends Controller
 
     public function listaIncidencias(Request $request)
     {
+        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
+            */
 
         try {
             $incidencias = RegistrarIncidencia::all();
