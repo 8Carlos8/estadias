@@ -13,11 +13,11 @@ class VerificacionMFAController extends Controller
     {
         $request->validate([
             'usuario_id' => 'required|exists:usuarios,id',
-            'metodo' => 'required|in:correo,wearable,app', //whatsapp y correo
+            'metodo' => 'required|in:correo,whatsapp', //whatsapp y correo
         ]);
 
         $codigo = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-        $validoHasta = Carbon::now()->addMinutes(10); // Código válido por 5 min
+        $validoHasta = Carbon::now()->addMinutes(5); // Código válido por 5 min
 
         $verificacion = VerificacionMFA::create([
             'usuario_id' => $request->usuario_id,
@@ -30,9 +30,9 @@ class VerificacionMFAController extends Controller
         return response()->json([
             'mensaje' => 'Código MFA generado',
             'codigo' => $codigo,
-            'verificacion' => $verificacion //Codigo de operación 201
-        ]);
-    }
+            'verificacion' => $verificacion
+    ], 201); // Codigo de operación 201
+}
 
     // verificarCodigoMFA($usuario_id, $codigo)
     public function verificarCodigo(Request $request)
@@ -56,7 +56,7 @@ class VerificacionMFAController extends Controller
         $verificacion->verificado = true;
         $verificacion->save();
 
-        return response()->json(['mensaje' => 'Código verificado correctamente']); //Codigo de operación 200
+     return response()->json(['mensaje' => 'Código verificado correctamente'])->setStatusCode(200); //Codigo de operación 200
     }
 
     // obtenerUltimaVerificacionMFA($usuario_id)
@@ -75,6 +75,6 @@ class VerificacionMFAController extends Controller
             return response()->json(['mensaje' => 'No hay códigos pendientes'], 404);
         }
 
-        return response()->json($verificacion); //Codigo de operación 200
+        return response()->json($verificacion)->setStatusCode(200);//Codigo de operación 200
     }
 }

@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 namespace App\Http\Controllers;
 
@@ -8,20 +8,35 @@ use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
-    //Agregar la función del Token y validar en todas las funciones
-   
-    //  registrarUsuario($datos)
+    //Agregar la función del Token y validar en todas las funciones 
+
+    // Función privada para validar el token
+    private function validarToken(Request $request)
+    {
+        $token = $request->header('Authorization');
+
+       
+        if (!$token || $token !== 'tu_token_secreto_aqui') {
+            return response()->json(['mensaje' => 'Token inválido o no proporcionado'], 401);
+        }
+
+        return null;
+    }
+
+    // registrarUsuario
     public function registrarUsuario(Request $request)
     {
+        if ($error = $this->validarToken($request)) return $error;
+
         $request->validate([
             'nombre' => 'required|string',
             'apellido_paterno' => 'required|string',
             'apellido_materno' => 'required|string',
-            'curp' => 'required|string|size:18|unique:usuarios,curp',//Limite 18
+            'curp' => 'required|string|size:18|unique:usuarios,curp',
             'correo' => 'required|email|unique:usuarios,correo',
-            'telefono' => 'nullable|string|max:20', //Limite 10
+            'telefono' => 'nullable|string|max:10',
             'tipo_usuario' => 'required|in:estudiante,docente,admin',
-            'password' => 'required|string|min:6', //Limite 12
+            'password' => 'required|string|min:12',
         ]);
 
         $datos = $request->all();
@@ -35,9 +50,10 @@ class UsuarioController extends Controller
         ], 201);
     }
 
-    //  iniciarSesion($correo, $password)
+    // iniciarSesion
     public function iniciarSesion(Request $request)
     {
+        // No valido token aquí porque aqi lo obtengo
         $request->validate([
             'correo' => 'required|email',
             'password' => 'required|string',
@@ -56,20 +72,25 @@ class UsuarioController extends Controller
             ]);
         }
 
+        // Aquí teiene que generar un token real :)
+        $token = 'token_generado_para_usuario';
+
         return response()->json([
             'mensaje' => 'Inicio de sesión exitoso',
             'usuario' => [
                 'id' => $usuario->id,
                 'nombre' => $usuario->nombre,
                 'tipo_usuario' => $usuario->tipo_usuario,
-                
+                'token' => $token,
             ]
         ]);
     }
 
-    //  obtenerUsuarioPorCorreo 
+    // obtenerUsuarioPorCorreo
     public function obtenerUsuarioPorCorreo(Request $request)
     {
+        if ($error = $this->validarToken($request)) return $error;
+
         $request->validate([
             'correo' => 'required|email'
         ]);
@@ -83,87 +104,152 @@ class UsuarioController extends Controller
         return response()->json($usuario);
     }
 
-    //  actualizarPassword 
+    // actualizarPassword
     public function actualizarPassword(Request $request)
     {
+        if ($error = $this->validarToken($request)) return $error;
+
         $request->validate([
             'usuario_id' => 'required|exists:usuarios,id',
-            'nueva_password' => 'required|string|min:6', //Limite 12
+            'nueva_password' => 'required|string|min:12',
         ]);
 
-        $usuario = Usuario::find($request->usuario_id); //If pa que se compruebe si existe el usuario
+        $usuario = Usuario::find($request->usuario_id);
+
+        if (!$usuario) {
+            return response()->json(['mensaje' => 'Usuario no encontrado'], 404);
+        }
+
         $usuario->password = bcrypt($request->nueva_password);
         $usuario->save();
 
         return response()->json(['mensaje' => 'Contraseña actualizada correctamente']);
     }
 
-    //  activarMFA 
+    // activarMFA
     public function activarMFA(Request $request)
     {
+        if ($error = $this->validarToken($request)) return $error;
+
         $request->validate([
             'usuario_id' => 'required|exists:usuarios,id'
         ]);
 
-        $usuario = Usuario::find($request->usuario_id);//If pa que se compruebe si existe el usuario
+        $usuario = Usuario::find($request->usuario_id);
+
+        if (!$usuario) {
+            return response()->json(['mensaje' => 'Usuario no encontrado'], 404);
+        }
+
         $usuario->mfa = true;
         $usuario->save();
 
         return response()->json(['mensaje' => 'MFA activado para el usuario']);
     }
 
-    //  actualizar usuario, actualizar todos los campos
+    // actualizarUsuario
     public function actualizarUsuario(Request $request)
     {
+        if ($error = $this->validarToken($request)) return $error;
+
         $request->validate([
             'id' => 'required|exists:usuarios,id',
-            'nombre' => 'nullable|string',
-            'apellido_paterno' => 'nullable|string',
-            'apellido_materno' => 'nullable|string',
-            'telefono' => 'nullable|string|max:20',
-            'tipo_usuario' => 'nullable|in:estudiante,docente,admin',
+            'nombre' => 'required|string',
+            'apellido_paterno' => 'required|string',
+            'apellido_materno' => 'required|string',
+            'curp' => 'required|string|size:18|unique:usuarios,curp,' . $request->id,
+            'correo' => 'required|email|unique:usuarios,correo,' . $request->id,
+            'telefono' => 'nullable|string|max:10',
+            'tipo_usuario' => 'required|in:estudiante,docente,admin',
+            'password' => 'required|string|min:12',
         ]);
 
-        //If pa que se compruebe si existe el usuario
         $usuario = Usuario::find($request->id);
-        $usuario->update($request->only([
-            'nombre', 'apellido_paterno', 'apellido_materno',
-            'telefono', 'tipo_usuario'
-        ]));
 
-        return response()->json(['mensaje' => 'Usuario actualizado correctamente', 'usuario' => $usuario]); //Codigo de operación 200
+        if (!$usuario) {
+            return response()->json(['mensaje' => 'Usuario no encontrado'], 404);
+        }
+
+        $usuario->update([
+            'nombre' => $request->nombre,
+            'apellido_paterno' => $request->apellido_paterno,
+            'apellido_materno' => $request->apellido_materno,
+            'curp' => $request->curp,
+            'correo' => $request->correo,
+            'telefono' => $request->telefono,
+            'tipo_usuario' => $request->tipo_usuario,
+            'password' => bcrypt($request->password),
+        ]);
+
+        return response()->json([
+            'mensaje' => 'Usuario actualizado correctamente',
+            'usuario' => $usuario
+        ])->setStatusCode(200);
     }
 
-    //  eliminar usuario
+    // eliminarUsuario
     public function eliminarUsuario(Request $request)
     {
+        if ($error = $this->validarToken($request)) return $error;
+
         $request->validate([
             'id' => 'required|exists:usuarios,id'
         ]);
 
         $usuario = Usuario::find($request->id);
-        //If pa que se compruebe si existe el usuario
+
+        if (!$usuario) {
+            return response()->json(['mensaje' => 'Usuario no encontrado'], 404);
+        }
+
         $usuario->delete();
 
-        return response()->json(['mensaje' => 'Usuario eliminado correctamente']);//Codigo de operación 200
+        return response()->json(['mensaje' => 'Usuario eliminado correctamente'])
+            ->setStatusCode(200);
     }
 
-    //  obtener usuario por ID
+    // obtenerUsuarioPorId
     public function obtenerUsuarioPorId(Request $request)
     {
+        if ($error = $this->validarToken($request)) return $error;
+
         $request->validate([
             'id' => 'required|exists:usuarios,id'
         ]);
 
         $usuario = Usuario::find($request->id);
-        //If pa que se compruebe si existe el usuario
-        return response()->json($usuario);//Codigo de operación 200, nombre del objeto
+
+        if (!$usuario) {
+            return response()->json(['mensaje' => 'Usuario no encontrado'], 404);
+        }
+
+        return response()->json(['usuario' => $usuario])
+            ->setStatusCode(200);
     }
 
-    //  listar todos los usuarios por filtro, agregar la función pa listar los usuarios por id, cambiar los parametro pa que se reciban lo del request
-    public function listarUsuarios()
+    // listarUsuarios
+    public function listarUsuarios(Request $request)
     {
+        if ($error = $this->validarToken($request)) return $error;
+
+        $request->validate([
+            'id' => 'nullable|exists:usuarios,id'
+        ]);
+
+        if ($request->has('id')) {
+            $usuario = Usuario::find($request->id);
+
+            if (!$usuario) {
+                return response()->json(['mensaje' => 'Usuario no encontrado'], 404);
+            }
+
+            return response()->json(['usuarios' => [$usuario]])
+                ->setStatusCode(200);
+        }
+
         $usuarios = Usuario::orderBy('nombre')->get();
-        return response()->json($usuarios);//Codigo de operación 200, nombre del array
+
+        return response()->json(['usuarios' => $usuarios])
+            ->setStatusCode(200);
     }
 }

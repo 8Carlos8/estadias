@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CartaAceptacion;
 use App\Models\Estadia;
+use Illuminate\Support\Facades\Storage; 
 
 class CartaAceptacionController extends Controller
 {
@@ -29,6 +30,35 @@ class CartaAceptacionController extends Controller
     }
 
     /**
+     *  Guarda la carta de aceptación con archivo en el storage.
+     */
+    public function registrarCartaConArchivo(Request $request)
+    {
+        $request->validate([
+            'estadia_id' => 'required|integer|exists:estadias,id',
+            'fecha_recepcion' => 'required|date',
+            'documento' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120', // preguntar a charly
+            'observaciones' => 'nullable|string',
+        ]);
+
+        // Guardar el archivo 
+        $rutaArchivo = $request->file('documento')->store('cartas_aceptacion', 'public');
+
+        // Crear el registro con la ruta del archivo guardado
+        $carta = CartaAceptacion::create([
+            'estadia_id' => $request->estadia_id,
+            'fecha_recepcion' => $request->fecha_recepcion,
+            'ruta_documento' => $rutaArchivo,
+            'observaciones' => $request->observaciones,
+        ]);
+
+        return response()->json([
+            'mensaje' => 'Carta guardada correctamente',
+            'carta' => $carta,
+        ], 201);
+    }
+
+    /**
      *  Devuelve la carta de aceptación vinculada a una estadía (por Request)
      */
     public function obtenerCartaAceptacionPorEstadia(Request $request)
@@ -45,7 +75,9 @@ class CartaAceptacionController extends Controller
             ], 404);
         }
 
-        return response()->json($carta); //Nombre del objeto y el codigo de operacioón
+        return response()->json([
+            'carta_aceptacion' => $carta
+        ], 200); // Nombre del objeto y el codigo de operación 200
     }
 
     /**
@@ -60,14 +92,18 @@ class CartaAceptacionController extends Controller
             'observaciones' => 'nullable|string',
         ]);
 
-        $carta = CartaAceptacion::find($request->id);//If pa que se compruebe si existe la carta
+        $carta = CartaAceptacion::find($request->id); // If pa que se compruebe si existe la carta
+
+        if (!$carta) {
+            return response()->json(['mensaje' => 'Carta no encontrada'], 404);
+        }
 
         $carta->update($request->only(['fecha_recepcion', 'ruta_documento', 'observaciones']));
 
         return response()->json([
             'mensaje' => 'Carta actualizada correctamente',
-            'carta' => $carta 
-        ]);//Codigo de operación 200
+            'carta' => $carta
+        ])->setStatusCode(200); // Codigo de operación 200
     }
 
     /**
@@ -79,21 +115,27 @@ class CartaAceptacionController extends Controller
             'id' => 'required|exists:cartas_aceptacion,id'
         ]);
 
-        $carta = CartaAceptacion::find($request->id); //If pa que se compruebe si existe la carta
+        $carta = CartaAceptacion::find($request->id); // If pa que se compruebe si existe la carta
+
+        if (!$carta) {
+            return response()->json(['mensaje' => 'Carta no encontrada'], 404);
+        }
+
         $carta->delete();
 
-        return response()->json(['mensaje' => 'Carta eliminada correctamente']); //Codigo de operación
+        return response()->json(['mensaje' => 'Carta eliminada correctamente']) // Codigo de operación 200
+            ->setStatusCode(200);
     }
+
     /**
      *  Listar todas las cartas
      */
     //Agregar la función pa que liste las cartas sin filtro, el orden del id, cambiar los parametro pa que se reciban lo del request
-    public function listarTodas()
+    public function listarTodas(Request $request)
     {
-        $cartas = CartaAceptacion::orderByDesc('fecha_recepcion')->get();
+        $cartas = CartaAceptacion::orderBy('id')->get(); // Orden por id
 
-        return response()->json($cartas); //Nombre del array
+        return response()->json(['cartas_aceptacion' => $cartas], 200); // Nombre del array y código de operación 200
     }
-
 }
 
