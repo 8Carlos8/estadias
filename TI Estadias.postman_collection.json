@@ -1,0 +1,1975 @@
+{
+	"info": {
+		"_postman_id": "0041902e-4e57-4b59-9c38-5c0b4f45f227",
+		"name": "TI Estadias",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30544166"
+	},
+	"item": [
+		{
+			"name": "Carta Presentación",
+			"item": [
+				{
+					"name": "Registrar Carta de Presentación",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "token",
+									"value": "2|f7FeOKZpFstzSHdzs0F6v97Z7mLFyJwWbdSjlGlJee278a69",
+									"type": "text"
+								},
+								{
+									"key": "estadia_id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "fecha_emision",
+									"value": "2025-08-05",
+									"type": "text"
+								},
+								{
+									"key": "ruta_documento",
+									"type": "file",
+									"src": "/D:/descarr/descargas de la pc anterior/004.pdf"
+								},
+								{
+									"key": "tutor_id",
+									"value": "2",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/cartaPres/register",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"cartaPres",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Carta de Presentación",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "token",
+									"value": "2|f7FeOKZpFstzSHdzs0F6v97Z7mLFyJwWbdSjlGlJee278a69",
+									"type": "text"
+								},
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "estadia_id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "fecha_emision",
+									"value": "2025-08-07",
+									"type": "text"
+								},
+								{
+									"key": "ruta_documento",
+									"type": "file",
+									"src": "/D:/descarr/descargas de la pc anterior/1_Info[1].pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/cartaPres/update",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"cartaPres",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Carta de Presentación",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "token",
+									"value": "2|f7FeOKZpFstzSHdzs0F6v97Z7mLFyJwWbdSjlGlJee278a69",
+									"type": "text"
+								},
+								{
+									"key": "id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "estadia_id",
+									"value": "4",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "fecha_emision",
+									"value": "2025-08-07",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "ruta_documento",
+									"type": "file",
+									"src": [],
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/cartaPres/delete",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"cartaPres",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ver Carta de Presentación",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "tutor_id",
+									"value": "2",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "estadia_id",
+									"value": "4",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "fecha_emision",
+									"value": "2025-08-07",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "ruta_documento",
+									"type": "file",
+									"src": [],
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/cartaPres/verCartaPres",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"cartaPres",
+								"verCartaPres"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Firmar Carta de Presentación",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "tutor_id",
+									"value": "2",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "estadia_id",
+									"value": "4",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "fecha_emision",
+									"value": "2025-08-07",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "ruta_documento",
+									"type": "file",
+									"src": "/D:/descarr/descargas de la pc anterior/004.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/cartaPres/firmaCartaPres",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"cartaPres",
+								"firmaCartaPres"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Descargar Carta de Presentación",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "token",
+									"value": "2|f7FeOKZpFstzSHdzs0F6v97Z7mLFyJwWbdSjlGlJee278a69",
+									"type": "text"
+								},
+								{
+									"key": "id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "estadia_id",
+									"value": "4",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "fecha_emision",
+									"value": "2025-08-07",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "ruta_documento",
+									"type": "file",
+									"src": [],
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/cartaPres/descargarCartaPres",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"cartaPres",
+								"descargarCartaPres"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista Cartas de Presentación Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "tutor_id",
+									"value": "2",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "estadia_id",
+									"value": "4",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "fecha_emision",
+									"value": "2025-08-07",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "ruta_documento",
+									"type": "file",
+									"src": [],
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/cartaPres/listaCartasPres",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"cartaPres",
+								"listaCartasPres"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Estadia",
+			"item": [
+				{
+					"name": "Registrar Estadia",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"1|cu15pM6AFYCcgSFXSfstFZlHTZSXGcwF3jrO4cNv0a727c5c\",\r\n    \"alumno_id\": 1,\r\n    \"empresa\": \"Tech Solutions SA de CV\",\r\n    \"asesor_externo\": \"Ing. Roberto Muñoz\",\r\n    \"proyecto_nombre\": \"Sistema de gestión de inventarios\",\r\n    \"duracion_semanas\": 12,\r\n    \"fecha_inicio\": \"2025-08-01\",\r\n    \"fecha_fin\": \"2025-10-24\",\r\n    \"apoyo\": \"Beca económica\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/estadia/register",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"estadia",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Visualizar Estadia",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"id\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/estadia/verEstadia",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"estadia",
+								"verEstadia"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista Estadias",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/estadia/listaEstadias",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"estadia",
+								"listaEstadias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Estadia",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"id\": 3,\r\n    \"alumno_id\": 3,\r\n    \"empresa\": \"Tech Solutions\",\r\n    \"asesor_externo\": \"Ing. Roberto Muñoz\",\r\n    \"proyecto_nombre\": \"Sistema de gestión de inventarios\",\r\n    \"duracion_semanas\": 12,\r\n    \"fecha_inicio\": \"2025-08-01\",\r\n    \"fecha_fin\": \"2025-10-24\",\r\n    \"apoyo\": \"Beca económica\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/estadia/update",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"estadia",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Estadia",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"id\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/estadia/delete",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"estadia",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"correo\": \"1@gmail.com\",\r\n    \"password\": \"contrasenia1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/usuarios/login",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"1|cu15pM6AFYCcgSFXSfstFZlHTZSXGcwF3jrO4cNv0a727c5c\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/usuarios/logout",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registrar Usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Carlos\",\r\n    \"apellido_paterno\": \"Romero\",\r\n    \"apellido_materno\": \"Flores\",\r\n    \"curp\": \"ROFC041228HPLMLRA1\",\r\n    \"correo\": \"1@gmail.com\",\r\n    \"telefono\": \"2481726753\",\r\n    \"tipo_usuario\": \"estudiante\",\r\n    \"password\": \"contrasenia1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/usuarios/registrar",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								"registrar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Visualizar Usuario por Correo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"1|nIHTb3HNMrfpMWBYrcJMwmERKMNcO6bpDbY5TQzdd531e915\",\r\n    \"correo\": \"1@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/usuarios/por-correo",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								"por-correo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Visualizar Usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"1|nIHTb3HNMrfpMWBYrcJMwmERKMNcO6bpDbY5TQzdd531e915\",\r\n    \"id\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/usuarios/por-id",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								"por-id"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"1|nIHTb3HNMrfpMWBYrcJMwmERKMNcO6bpDbY5TQzdd531e915\",\r\n    \"id\": 4,\r\n    \"nombre\": \"Carlo\",\r\n    \"apellido_paterno\": \"Romero\",\r\n    \"apellido_materno\": \"Flores\",\r\n    \"curp\": \"ROFC041228HPLMLRA1\",\r\n    \"correo\": \"1@gmail.com\",\r\n    \"telefono\": \"2481726753\",\r\n    \"tipo_usuario\": \"estudiante\",\r\n    \"password\": \"contrasenia1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/usuarios/actualizar",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								"actualizar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activar MFA",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"id\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/usuarios/verEstadia",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								"verEstadia"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista Usuarios",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"1|nIHTb3HNMrfpMWBYrcJMwmERKMNcO6bpDbY5TQzdd531e915\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/usuarios/listar",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								"listar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"id\": 3,\r\n    \"alumno_id\": 3,\r\n    \"empresa\": \"Tech Solutions\",\r\n    \"asesor_externo\": \"Ing. Roberto Muñoz\",\r\n    \"proyecto_nombre\": \"Sistema de gestión de inventarios\",\r\n    \"duracion_semanas\": 12,\r\n    \"fecha_inicio\": \"2025-08-01\",\r\n    \"fecha_fin\": \"2025-10-24\",\r\n    \"apoyo\": \"Beca económica\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/usuarios/actualizar-password",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								"actualizar-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"1|nIHTb3HNMrfpMWBYrcJMwmERKMNcO6bpDbY5TQzdd531e915\",\r\n    \"id\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/usuarios/eliminar",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								"eliminar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Carta Aceptación",
+			"item": [
+				{
+					"name": "Registrar Carta",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "token",
+									"value": "1|nIHTb3HNMrfpMWBYrcJMwmERKMNcO6bpDbY5TQzdd531e915",
+									"type": "text"
+								},
+								{
+									"key": "estadia_id",
+									"value": "6",
+									"type": "text"
+								},
+								{
+									"key": "fecha_recepcion",
+									"value": "2025-08-01",
+									"type": "text"
+								},
+								{
+									"key": "ruta_documento",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "observaciones",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/cartas/registrar",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"cartas",
+								"registrar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Visualizar Carta",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"id\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/cartas/por-estadia",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"cartas",
+								"por-estadia"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista Cartas",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/cartas/listar",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"cartas",
+								"listar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Carta",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"id\": 3,\r\n    \"alumno_id\": 3,\r\n    \"empresa\": \"Tech Solutions\",\r\n    \"asesor_externo\": \"Ing. Roberto Muñoz\",\r\n    \"proyecto_nombre\": \"Sistema de gestión de inventarios\",\r\n    \"duracion_semanas\": 12,\r\n    \"fecha_inicio\": \"2025-08-01\",\r\n    \"fecha_fin\": \"2025-10-24\",\r\n    \"apoyo\": \"Beca económica\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/cartas/actualizar",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"cartas",
+								"actualizar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Carta",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"id\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/cartas/eliminar",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"cartas",
+								"eliminar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Incidencia",
+			"item": [
+				{
+					"name": "Registrar Incidencia",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"estadia_id\": 4,\r\n    \"descripcion\": \"Prueba de incidencia XDXD\",\r\n    \"fecha\": \"2025-08-01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/incidencia/register",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"incidencia",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Visualizar Incidencia",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/incidencia/verIncidencia",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"incidencia",
+								"verIncidencia"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista Incidencias",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/incidencia/listaIncidencias",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"incidencia",
+								"listaIncidencias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Incidencia",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"id\": 1,\r\n    \"estadia_id\": 4,\r\n    \"descripcion\": \"Prueba de incidencia XD\",\r\n    \"fecha\": \"2025-08-01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/incidencia/update",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"incidencia",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Incidencia",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/incidencia/delete",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"incidencia",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Multifactor",
+			"item": [
+				{
+					"name": "Crear Codigo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"usuario_id\": 3,\r\n    \"metodo\": \"correo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/mfa/generar",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"mfa",
+								"generar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Visualizar Incidencia",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/incidencia/verIncidencia",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"incidencia",
+								"verIncidencia"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista Incidencias",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/incidencia/listaIncidencias",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"incidencia",
+								"listaIncidencias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Incidencia",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"id\": 1,\r\n    \"estadia_id\": 4,\r\n    \"descripcion\": \"Prueba de incidencia XD\",\r\n    \"fecha\": \"2025-08-01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/incidencia/update",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"incidencia",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Incidencia",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/incidencia/delete",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"incidencia",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Documentos Extra",
+			"item": [
+				{
+					"name": "Registrar Documento Extra",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "estadia_id",
+									"value": "4",
+									"type": "text"
+								},
+								{
+									"key": "nombre",
+									"value": "Prueba de Archivo",
+									"type": "text"
+								},
+								{
+									"key": "ruta",
+									"type": "file",
+									"src": "/D:/descarr/descargas de la pc anterior/004.pdf"
+								},
+								{
+									"key": "fecha_subida",
+									"value": "2025-07-01",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/docExtra/register",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"docExtra",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Visualizar Documento Extra",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/docExtra/verDocExtra",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"docExtra",
+								"verDocExtra"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista Documento Extra",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/docExtra/listaDocExtra",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"docExtra",
+								"listaDocExtra"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Documento Extra",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "estadia_id",
+									"value": "4",
+									"type": "text"
+								},
+								{
+									"key": "nombre",
+									"value": "Prueba de Archivo XDXD",
+									"type": "text"
+								},
+								{
+									"key": "ruta",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "fecha_subida",
+									"value": "2025-07-02",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/docExtra/update",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"docExtra",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Documento Extra",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/docExtra/delete",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"docExtra",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Programar Visita",
+			"item": [
+				{
+					"name": "Registrar Visita",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"estadia_id\": 4,\r\n    \"user_id\": 2,\r\n    \"fecha\": \"2025-07-26\",\r\n    \"hora\": \"10:30\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/visita/register",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"visita",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Visualizar Visita",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/visita/verVisita",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"visita",
+								"verVisita"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista Visita",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/visita/listaVisitas",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"visita",
+								"listaVisitas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Visita",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"id\": 1,\r\n    \"estadia_id\": 4,\r\n    \"user_id\": 2,\r\n    \"fecha\": \"2025-07-28\",\r\n    \"hora\": \"10:30\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/visita/update",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"visita",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Visita",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    //\"token\": \"14|0y1NtohxqQ7YccoPI0tVeKEtjkpPuwomZpQAT1Rw61883bb9\",\r\n    \"id\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/visita/delete",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"visita",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Seguimiento de Estadia",
+			"item": [
+				{
+					"name": "Actualiza Autobus",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "id",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "numero_autobus",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "linea",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "capacidad",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "servicios",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/autobuses/update",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"autobuses",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crea Autobus",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token",
+									"value": "20007|TTArz00dKPdMFyWsE5m3xwG97n5fpdX8ZqTb1pRdea2f25b2",
+									"type": "text"
+								},
+								{
+									"key": "numero_autobus",
+									"value": "ABC12",
+									"type": "text"
+								},
+								{
+									"key": "linea",
+									"value": "AU",
+									"type": "text"
+								},
+								{
+									"key": "capacidad",
+									"value": "40",
+									"type": "text"
+								},
+								{
+									"key": "servicios",
+									"value": "Baños, WI-FI",
+									"type": "text"
+								},
+								{
+									"key": "num_incidencia",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/autobus/create",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"autobus",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Vizualizar autobus",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/autobus/view",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"autobus",
+								"view"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Elimina Autobus",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "id",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/autobus/delete",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"autobus",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Verificación de Documentos",
+			"item": [
+				{
+					"name": "Crea Corridas",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"20007|TTArz00dKPdMFyWsE5m3xwG97n5fpdX8ZqTb1pRdea2f25b2\",\r\n    \"id_autobus\": 2,\r\n    \"origen\": \"Ciudad A\",\r\n    \"destino\": \"Ciudad B\",\r\n    \"fecha\": \"2025-04-20\",\r\n    \"hora_salida\": \"08:00\",\r\n    \"hora_estima_llegada\": \"12:00\",\r\n    \"tipo_corrida\": 1,\r\n    \"asientos_totales\": 40,\r\n    \"precio\": 200\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/corrida/create",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"corrida",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualiza Corrida",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "id",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "origen",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "destino",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "hora_salida",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "precio ",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Elimina Corridas",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "id",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Visualiza Corrida",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token",
+									"value": "13|WaeCONr8cIp1KKBeeuqrrT5ijI3sUcQllQR0uoxn65b90b53",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL_Laragon}}/api/corrida/view",
+							"host": [
+								"{{URL_Laragon}}"
+							],
+							"path": [
+								"api",
+								"corrida",
+								"view"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "URL_Laragon",
+			"value": "http://127.0.0.1:8000",
+			"type": "default"
+		}
+	]
+}
