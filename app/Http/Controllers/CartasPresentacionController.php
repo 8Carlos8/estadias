@@ -7,25 +7,27 @@ use App\Models\Estadia_seguimiento;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Validator;
-use App\Models\User;
+use App\Models\Usuario;
 use Illuminate\Support\Facades\Storage;
 
 class CartasPresentacionController extends Controller
 {
-    //Aplicar lo mismo del documento extra aca XDXD
     public function register(Request $request)
     {
 
-        /*
+        //Con esta validación del token se acceden a sus propiedades
         $token = $request->input('token');
-        if(!$this->validateToken($token)){
+        $accessToken = PersonalAccessToken::findToken($token);
+
+        if (!$accessToken) {
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
+
+        //Aca es donde se pueden acceder a las propiedades
+        $usuario = $accessToken->tokenable;
 
         $validator = Validator::make($request->all(), [
             'estadia_id' => 'required|integer',
-            'tutor_id' => 'required|integer',
             'fecha_emision' => 'required|date',
             'ruta_documento'=> 'required|file',
         ]);
@@ -38,12 +40,14 @@ class CartasPresentacionController extends Controller
             ], 422);
         }
 
-        // Guardar archivo tambien corregir pa que se almacene el nombre del archivo en estecaso de la carta
-        $path = $request->file('ruta_documento')->store('cartas', 'public'); // ruta relativa
+        // Guardar archivo con el nombre original
+        $file = $request->file('ruta_documento');
+        $originalName = $file->getClientOriginalName();
+        $path = $file->storeAs('cartas', $originalName, 'public'); // mantiene el nombre original
 
         $cartaPres = Cartas_presentacion::create([
             'estadia_id' => $request->estadia_id,
-            'tutor_id' => $request->tutor_id,
+            'tutor_id' => $usuario->id,
             'fecha_emision' => $request->fecha_emision,
             'ruta_documento' => $path,
             'firmada_director' => false,
@@ -57,7 +61,7 @@ class CartasPresentacionController extends Controller
             $seguimiento->estatus = 'pendiente';
             $seguimiento->comentario = 'Carta de presentación creada';
             $seguimiento->fecha_actualizacion = now();
-            $seguimiento->actualizado_por = 2; //Cmbiar esto por el campo del id
+            $seguimiento->actualizado_por = $usuario->id; //Cmbiar esto por el campo del id
             $seguimiento->save();
         } else {
             // Si no existe seguimiento, crear uno nuevo
@@ -67,7 +71,7 @@ class CartasPresentacionController extends Controller
                 'estatus' => 'pendiente',
                 'comentario' => 'Seguimiento generado automáticamente al registrar carta',
                 'fecha_actualizacion' => now(),
-                'actualizado_por' => 2, //Cmbiar esto por el campo del id
+                'actualizado_por' => $usuario->id, //Cmbiar esto por el campo del id
             ]);
         }
 
@@ -78,12 +82,11 @@ class CartasPresentacionController extends Controller
 
     public function update(Request $request)
     {
-        /*
+    
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         $cartaPres = Cartas_presentacion::find($request->input('id'));
 
@@ -106,9 +109,18 @@ class CartasPresentacionController extends Controller
             ], 422);
         }
 
-        // Si hay un archivo nuevo, lo almacenamos, comprobar esto ya que creo que no funciona XDXD
+        // Si hay un archivo nuevo
         if ($request->hasFile('ruta_documento')) {
-            $path = $request->file('ruta_documento')->store('cartas', 'public');
+            // Eliminar archivo anterior
+            if ($cartaPres->ruta_documento && Storage::disk('public')->exists($cartaPres->ruta_documento)) {
+                Storage::disk('public')->delete($cartaPres->ruta_documento);
+            }
+
+            // Guardar archivo con el nombre original
+            $file = $request->file('ruta_documento');
+            $originalName = $file->getClientOriginalName();
+            $path = $file->storeAs('cartas', $originalName, 'public');
+
             $cartaPres->ruta_documento = $path;
         }
 
@@ -127,13 +139,15 @@ class CartasPresentacionController extends Controller
 
     public function delete(Request $request)
     {
-        //Regresar a la otra etapa del seguimiento, aca y en la parte del update y la firma
-        /*
+
         $token = $request->input('token');
-        if(!$this->validateToken($token)){
+        $accessToken = PersonalAccessToken::findToken($token);
+
+        if (!$accessToken) {
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
+
+        $usuario = $accessToken->tokenable;
 
         $cartaPres = Cartas_presentacion::find($request->input('id'));
 
@@ -141,18 +155,44 @@ class CartasPresentacionController extends Controller
             return response()->json(['message' => 'Carta de presentación no encontrada'], 404);
         }
 
+        // eliminar archivo
+        if ($cartaPres->ruta_documento && Storage::disk('public')->exists($cartaPres->ruta_documento)) {
+            Storage::disk('public')->delete($cartaPres->ruta_documento);
+        }
+
+        $estadiaId = $cartaPres->estadia_id;
         $cartaPres->delete();
+
+        // volver a la etapa anterior
+        $seguimiento = Estadia_seguimiento::where('estadia_id', $estadiaId)->first();
+        if ($seguimiento) {
+            $seguimiento->etapa = 'solicitud';
+            $seguimiento->estatus = 'pendiente';
+            $seguimiento->comentario = 'Carta de presentación eliminada, regreso a seguimiento inicial';
+            $seguimiento->fecha_actualizacion = now();
+            $seguimiento->actualizado_por = $usuario->id;
+            $seguimiento->save();
+        } else {
+            Estadia_seguimiento::create([
+                'estadia_id' => $estadiaId,
+                'etapa' => 'solicitud',
+                'estatus' => 'pendiente',
+                'comentario' => 'Seguimiento inicial generado automáticamente',
+                'fecha_actualizacion' => now(),
+                'actualizado_por' => $usuario->id,
+            ]);
+        }
+
         return response()->json(['message' => 'Carta de presentación eliminada con éxito'], 200);
     }
 
     public function verCartaPres(Request $request)
     {
-        /*
+    
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         $id = $request->input('id');
 
@@ -166,12 +206,11 @@ class CartasPresentacionController extends Controller
 
     public function listaCartasPres(Request $request)
     {
-        /*
+        
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         try {
             $cartasPres = Cartas_presentacion::all();
@@ -184,12 +223,11 @@ class CartasPresentacionController extends Controller
 
     public function firmaCartaPres(Request $request)
     {
-        /*
+        
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         $id = $request->input('id');
         $cartaPres = Cartas_presentacion::find($id);
@@ -237,16 +275,11 @@ class CartasPresentacionController extends Controller
 
     public function descargarCartaPres(Request $request)
     {
-        /*Logida de la descarga de la carga con la libreria 
-        que utilizo meli en la bitacora o buscar de otra manera la descarga,
-        pero creo que es la ruta del doc, devolverla y que la abra en una pestaña nueva
-        y que la descargue y tambiem agregar el boton de descarga desde afuera
-        
+
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-        */
 
         $id = $request->input('id');
         $cartaPres = Cartas_presentacion::find($id);
@@ -265,6 +298,6 @@ class CartasPresentacionController extends Controller
     private function validateToken($token)
     {
         $accessToken = PersonalAccessToken::findToken($token);
-        return $accessToken && $accessToken->tokenable_type === 'App\Models\User';
+        return $accessToken && $accessToken->tokenable_type === 'App\Models\Usuario';
     }
 }

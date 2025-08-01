@@ -6,7 +6,7 @@ use App\Models\Estadia_seguimiento;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Validator;
-use App\Models\User;
+use App\Models\Usuario;
 
 class EstadiaSeguimientoController extends Controller
 {
@@ -126,6 +126,6 @@ class EstadiaSeguimientoController extends Controller
     private function validateToken($token)
     {
         $accessToken = PersonalAccessToken::findToken($token);
-        return $accessToken && $accessToken->tokenable_type === 'App\Models\User';
+        return $accessToken && $accessToken->tokenable_type === 'App\Models\Usuario';
     }
 }

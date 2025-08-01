@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade');
             $table->string('codigo_enviado', 6);
-            $table->enum('metodo', ['correo', 'wearable', 'app']);
+            $table->enum('metodo', ['correo', 'whatsapp']);
             $table->dateTime('valido_hasta');
             $table->boolean('verificado')->default(false);
             $table->timestamps();

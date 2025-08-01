@@ -34,6 +34,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::prefix('usuarios')->group(function () {
     Route::post('/registrar', [UsuarioController::class, 'registrarUsuario']);
     Route::post('/login', [UsuarioController::class, 'iniciarSesion']);
+    Route::post('/logout', [UsuarioController::class, 'logout']);
     Route::post('/por-correo', [UsuarioController::class, 'obtenerUsuarioPorCorreo']);
     Route::post('/por-id', [UsuarioController::class, 'obtenerUsuarioPorId']);
     Route::post('/actualizar', [UsuarioController::class, 'actualizarUsuario']);
@@ -43,7 +44,6 @@ Route::prefix('usuarios')->group(function () {
     Route::post('/listar', [UsuarioController::class, 'listarUsuarios']);
 });
 
-
 // Cartas de Aceptación
 Route::prefix('cartas')->group(function () {
     Route::post('/registrar', [CartaAceptacionController::class, 'registrarCartaAceptacion']);
@@ -52,7 +52,6 @@ Route::prefix('cartas')->group(function () {
     Route::post('/eliminar', [CartaAceptacionController::class, 'destroy']);
     Route::post('/listar', [CartaAceptacionController::class, 'listarTodas']);
 });
-
 
 // Notificaciones
 Route::prefix('notificaciones')->group(function () {

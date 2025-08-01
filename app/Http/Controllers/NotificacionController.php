@@ -34,7 +34,6 @@ class NotificacionController extends Controller
         ], 201);
     }
 
-    //  Obtener notificaciones por usuario desde request
     public function obtenerNotificacionesUsuario(Request $request)
     {
         $request->validate([
@@ -55,7 +54,7 @@ class NotificacionController extends Controller
             $notificacion->nombre_usuario = $usuario->nombre . ' ' . $usuario->apellido_paterno;
         });
 
-        return response()->json($notificaciones);
+        return response()->json($notificaciones); //Nombre del objeto y código
     }
 
     // Marcar notificación como leída
@@ -76,91 +75,93 @@ class NotificacionController extends Controller
     }
 
     //  Buscar notificación por ID, cambiar los parametro pa que se reciban lo del request
-public function obtenerNotificacionPorId(Request $request)
-{
-    $request->validate([
-        'id' => 'required|exists:notificaciones,id',
-    ]);
+    public function obtenerNotificacionPorId(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:notificaciones,id',
+        ]);
 
-    $notificacion = Notificacion::find($request->id); // no recibir el id si no el input
-
-    if (!$notificacion) {
-        return response()->json(['mensaje' => 'Notificación no encontrada'], 404);
-    }
-
-    return response()->json([
-        'notificacion' => $notificacion
-    ], 200); // Agregar el nombre del objeto y el codigo de operación
-}
-
-
-   //  Actualizar notificación, quitar el parámetro id
-public function update(Request $request)
-{
-    $request->validate([
-        'id' => 'required|exists:notificaciones,id',
-        'tipo' => 'in:correo,sms,wearable,app',
-        'mensaje' => 'string|nullable',
-        'fecha_envio' => 'date|nullable',
-        'prioridad' => 'in:alta,media,baja',
-        'leida' => 'boolean'
-    ]);
-
-    $notificacion = Notificacion::find($request->id); // no recibir el id si no el input
-
-    if (!$notificacion) {
-        return response()->json(['mensaje' => 'Notificación no encontrada'], 404);
-    }
-
-    $notificacion->update($request->only([
-        'tipo', 'mensaje', 'fecha_envio', 'prioridad', 'leida'
-    ]));
-
-    return response()->json([
-        'mensaje' => 'Notificación actualizada',
-        'notificacion' => $notificacion // Código de operación 200
-    ], 200);
-}
-
-
-    //  Eliminar notificación, cambiar los parametro pa que se reciban lo del request
-public function destroy(Request $request)
-{
-    $request->validate([
-        'id' => 'required|exists:notificaciones,id',
-    ]);
-
-    $notificacion = Notificacion::find($request->id); // no recibir el id si no el input
-
-    if (!$notificacion) {
-        return response()->json(['mensaje' => 'Notificación no encontrada'], 404);
-    }
-
-    $notificacion->delete();
-
-    return response()->json(['mensaje' => 'Notificación eliminada'], 200); // Codigo de operación 200
-}
-
-
-  //  Listar todas las notificaciones, cambiar los parametro pa que se reciban lo del request, listar las notificaciones por id
-public function listarTodas(Request $request)
-{
-    $request->validate([
-        'id' => 'nullable|exists:notificaciones,id',
-    ]);
-
-    if ($request->has('id')) {
         $notificacion = Notificacion::find($request->id);
 
         if (!$notificacion) {
             return response()->json(['mensaje' => 'Notificación no encontrada'], 404);
         }
 
-        return response()->json(['notificaciones' => [$notificacion]], 200);
+        return response()->json([
+            'notificacion' => $notificacion
+        ], 200);
     }
 
-    $notificaciones = Notificacion::orderByDesc('fecha_envio')->get();
+    //  Actualizar notificación, quitar el parámetro id
+    public function update(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:notificaciones,id',
+            'tipo' => 'in:correo,sms,wearable,app',
+            'mensaje' => 'string|nullable',
+            'fecha_envio' => 'date|nullable',
+            'prioridad' => 'in:alta,media,baja',
+            'leida' => 'boolean'
+        ]);
 
-    return response()->json(['notificaciones' => $notificaciones], 200);
-}
+        $notificacion = Notificacion::find($request->id);
+
+        if (!$notificacion) {
+            return response()->json(['mensaje' => 'Notificación no encontrada'], 404);
+        }
+
+        $notificacion->update($request->only([
+            'tipo', 'mensaje', 'fecha_envio', 'prioridad', 'leida'
+        ]));
+
+        return response()->json([
+            'mensaje' => 'Notificación actualizada',
+            'notificacion' => $notificacion
+        ], 200);
+    }
+
+    public function destroy(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:notificaciones,id',
+        ]);
+
+        $notificacion = Notificacion::find($request->id);
+
+        if (!$notificacion) {
+            return response()->json(['mensaje' => 'Notificación no encontrada'], 404);
+        }
+
+        $notificacion->delete();
+
+        return response()->json(['mensaje' => 'Notificación eliminada'], 200);
+    }
+
+    //  Listar todas las notificaciones, cambiar los parametro pa que se reciban lo del request, listar las notificaciones por id
+    public function listarTodas(Request $request)
+    {
+        $request->validate([
+            'id' => 'nullable|exists:notificaciones,id',
+        ]);
+
+        if ($request->has('id')) {
+            $notificacion = Notificacion::find($request->id);
+
+            if (!$notificacion) {
+                return response()->json(['mensaje' => 'Notificación no encontrada'], 404);
+            }
+
+            return response()->json(['notificaciones' => [$notificacion]], 200);
+        }
+
+        $notificaciones = Notificacion::orderByDesc('fecha_envio')->get();
+
+        return response()->json(['notificaciones' => $notificaciones], 200);
+    }
+
+    private function validateToken($token)
+    {
+        $accessToken = PersonalAccessToken::findToken($token);
+        return $accessToken && $accessToken->tokenable_type === 'App\Models\Usuario';
+    }
 }

@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class VerificacionMFA extends Model
+class verificacion_mfa extends Model
 {
-    protected $table = 'verificaciones_mfa';
+    use HasFactory;
+
+    protected $table = 'verificacion_mfas';
 
     protected $fillable = [
         'usuario_id',
@@ -24,7 +27,7 @@ class VerificacionMFA extends Model
     // Relación 
     public function usuario()
     {
-        return $this->belongsTo(Usuario::class, 'usuario_id');
+        return $this->belongsTo(User::class, 'usuario_id');
     }
 }
 

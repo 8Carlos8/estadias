@@ -10,10 +10,16 @@ use Illuminate\Support\Facades\Storage;
 class CartaAceptacionController extends Controller
 {
     /**
-     *  Guarda la carta de aceptación recibida por parte de la empresa.
+     *  Guarda la carta de aceptación recibida por parte de la empresa. Actualizar el seguimiento conforme a lo que esta en el campo de estadias seguimiento 
      */
     public function registrarCartaAceptacion(Request $request)
     {
+
+        $token = $request->input('token');
+        if(!$this->validateToken($token)){
+            return response()->json(['message' => 'Token inválido'], 401);
+        }
+
         $request->validate([
             'estadia_id' => 'required|integer|exists:estadias,id',
             'fecha_recepcion' => 'required|date',
@@ -30,10 +36,16 @@ class CartaAceptacionController extends Controller
     }
 
     /**
-     *  Guarda la carta de aceptación con archivo en el storage.
+     *  Guarda la carta de aceptación con archivo en el storage. Ponerlo en la función de registrar 
      */
     public function registrarCartaConArchivo(Request $request)
     {
+
+        $token = $request->input('token');
+        if(!$this->validateToken($token)){
+            return response()->json(['message' => 'Token inválido'], 401);
+        }
+
         $request->validate([
             'estadia_id' => 'required|integer|exists:estadias,id',
             'fecha_recepcion' => 'required|date',
@@ -63,6 +75,12 @@ class CartaAceptacionController extends Controller
      */
     public function obtenerCartaAceptacionPorEstadia(Request $request)
     {
+
+        $token = $request->input('token');
+        if(!$this->validateToken($token)){
+            return response()->json(['message' => 'Token inválido'], 401);
+        }
+
         $request->validate([
             'estadia_id' => 'required|exists:estadias,id'
         ]);
@@ -77,14 +95,20 @@ class CartaAceptacionController extends Controller
 
         return response()->json([
             'carta_aceptacion' => $carta
-        ], 200); // Nombre del objeto y el codigo de operación 200
+        ], 200);
     }
 
     /**
-     *  Actualiza una carta de aceptación
+     *  Actualiza una carta de aceptación, elimiar el archivo que ya existe y subir el nuevo
      */
     public function update(Request $request)
     {
+
+        $token = $request->input('token');
+        if(!$this->validateToken($token)){
+            return response()->json(['message' => 'Token inválido'], 401);
+        }
+
         $request->validate([
             'id' => 'required|exists:cartas_aceptacion,id',
             'fecha_recepcion' => 'nullable|date',
@@ -92,7 +116,7 @@ class CartaAceptacionController extends Controller
             'observaciones' => 'nullable|string',
         ]);
 
-        $carta = CartaAceptacion::find($request->id); // If pa que se compruebe si existe la carta
+        $carta = CartaAceptacion::find($request->id);
 
         if (!$carta) {
             return response()->json(['mensaje' => 'Carta no encontrada'], 404);
@@ -103,19 +127,25 @@ class CartaAceptacionController extends Controller
         return response()->json([
             'mensaje' => 'Carta actualizada correctamente',
             'carta' => $carta
-        ])->setStatusCode(200); // Codigo de operación 200
+        ])->setStatusCode(200);
     }
 
     /**
-     *  Elimina una carta de aceptación por ID desde request
+     *  Elimina una carta de aceptación por ID desde request, eliminar el archivo tambien
      */
     public function destroy(Request $request)
     {
+
+        $token = $request->input('token');
+        if(!$this->validateToken($token)){
+            return response()->json(['message' => 'Token inválido'], 401);
+        }
+
         $request->validate([
             'id' => 'required|exists:cartas_aceptacion,id'
         ]);
 
-        $carta = CartaAceptacion::find($request->id); // If pa que se compruebe si existe la carta
+        $carta = CartaAceptacion::find($request->id);
 
         if (!$carta) {
             return response()->json(['mensaje' => 'Carta no encontrada'], 404);
@@ -123,19 +153,29 @@ class CartaAceptacionController extends Controller
 
         $carta->delete();
 
-        return response()->json(['mensaje' => 'Carta eliminada correctamente']) // Codigo de operación 200
+        return response()->json(['mensaje' => 'Carta eliminada correctamente'])
             ->setStatusCode(200);
     }
 
     /**
      *  Listar todas las cartas
      */
-    //Agregar la función pa que liste las cartas sin filtro, el orden del id, cambiar los parametro pa que se reciban lo del request
     public function listarTodas(Request $request)
     {
+
+        $token = $request->input('token');
+        if(!$this->validateToken($token)){
+            return response()->json(['message' => 'Token inválido'], 401);
+        }
+        
         $cartas = CartaAceptacion::orderBy('id')->get(); // Orden por id
 
-        return response()->json(['cartas_aceptacion' => $cartas], 200); // Nombre del array y código de operación 200
+        return response()->json(['cartas_aceptacion' => $cartas], 200);
+    }
+
+    private function validateToken($token)
+    {
+        $accessToken = PersonalAccessToken::findToken($token);
+        return $accessToken && $accessToken->tokenable_type === 'App\Models\Usuario';
     }
 }
-
