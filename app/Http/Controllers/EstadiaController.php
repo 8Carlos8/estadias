@@ -48,6 +48,7 @@ class EstadiaController extends Controller
 
         $estadia = Estadia::create([
             'alumno_id' => $request->alumno_id,
+            'id_docente' => $usuario->id,
             'empresa' => $request->empresa,
             'asesor_externo' => $request->asesor_externo,
             'proyecto_nombre' => $request->proyecto_nombre,
@@ -141,6 +142,86 @@ class EstadiaController extends Controller
 
         return response()->json(['estdias' => $estadias], 200);
     }
+
+    public function estadiasPorDocente(Request $request)
+    {
+        $token = $request->input('token');
+        $accessToken = PersonalAccessToken::findToken($token);
+
+        if (!$accessToken) {
+            return response()->json(['message' => 'Token inválido'], 401);
+        }
+
+        // Obtener el usuario asociado al token
+        $usuario = $accessToken->tokenable;
+
+        try {
+            // Buscar todas las estadias del docente logueado
+            $estadias = Estadia::where('id_docente', $usuario->id)->get();
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al obtener las estadías',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+
+        return response()->json(['estadias' => $estadias], 200);
+    }
+
+    public function contarEstadias(Request $request)
+    {
+        $token = $request->input('token');
+        $accessToken = PersonalAccessToken::findToken($token);
+
+        if (!$accessToken) {
+            return response()->json(['message' => 'Token inválido'], 401);
+        }
+
+        // Contar estadías
+        $count = Estadia::count();
+
+        return response()->json(['total_estadias' => $count], 200);
+    }
+
+    public function contarEstadiasDocente(Request $request)
+    {
+        $token = $request->input('token');
+        $accessToken = PersonalAccessToken::findToken($token);
+
+        if (!$accessToken) {
+            return response()->json(['message' => 'Token inválido'], 401);
+        }
+
+        $usuario = $accessToken->tokenable;
+
+        // Contar estadías
+        $count = Estadia::where('id_docente', $usuario->id)->count();
+
+        return response()->json(['total_estadias' => $count], 200);
+    }
+
+    public function alumnosPorDocente(Request $request)
+    {
+        $token = $request->input('token');
+        $accessToken = PersonalAccessToken::findToken($token);
+
+        if (!$accessToken) {
+            return response()->json(['message' => 'Token inválido'], 401);
+        }
+
+        $usuario = $accessToken->tokenable;
+
+        // Obtener IDs únicos de alumnos en las estadías del docente
+        $alumnoIds = Estadia::where('id_docente', $usuario->id)
+            ->pluck('alumno_id')
+            ->unique();
+
+        // Obtener datos de los alumnos
+        $alumnos = Usuario::whereIn('id', $alumnoIds)->get(['id', 'nombre', 'correo']);
+
+        return response()->json(['alumnos' => $alumnos], 200);
+    }
+
 
     private function validateToken($token)
     {

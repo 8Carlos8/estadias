@@ -13,6 +13,7 @@ class Estadia extends Model
 
     protected $fillable = [
         'alumno_id',
+        'id_docente',
         'empresa',
         'asesor_externo',
         'proyecto_nombre',

@@ -77,6 +77,10 @@ Route::post('/estadia/update', [EstadiaController::class, 'update']);
 Route::post('/estadia/delete', [EstadiaController::class, 'delete']);
 Route::post('/estadia/verEstadia', [EstadiaController::class, 'verEstadia']);
 Route::post('/estadia/listaEstadias', [EstadiaController::class, 'listaEstadias']);
+Route::post('/estadia/estadiasPorDocente', [EstadiaController::class, 'estadiasPorDocente']);
+Route::post('/estadia/contarEstadiasDocente', [EstadiaController::class, 'contarEstadiasDocente']);
+Route::post('/estadia/estadiasPorDocente', [EstadiaController::class, 'estadiasPorDocente']);
+Route::post('/estadia/contarEstadias', [EstadiaController::class, 'contarEstadias']);
 
 //Rutas de Incidencia
 Route::post('/incidencia/register', [RegistrarIncidenciaController::class, 'register']);
