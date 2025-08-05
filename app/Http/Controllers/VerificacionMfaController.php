@@ -55,9 +55,7 @@ class VerificacionMFAController extends Controller
                 Log::error("Error al enviar WhatsApp: " . $e->getMessage());
                 return response()->json(['message' => 'Usuario no encontrado.'], 404);
             }
-        }
-
-        
+        }       
 
         return response()->json([
             'mensaje' => 'Código MFA generado',
