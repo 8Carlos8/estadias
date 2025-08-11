@@ -136,32 +136,34 @@ class NotificacionController extends Controller
 
         return response()->json(['mensaje' => 'Notificación eliminada'], 200);
     }
-
+// Cambio aqui
     //  Listar todas las notificaciones, cambiar los parametro pa que se reciban lo del request, listar las notificaciones por id
-    public function listarTodas(Request $request)
-    {
-        $request->validate([
-            'id' => 'nullable|exists:notificaciones,id',
-        ]);
+    public function listarTodas(Request $request) 
+{
+    $request->validate([
+        'token' => 'required|string',
+        'id' => 'nullable|integer|exists:notificaciones,id',
+    ]);
 
-        if ($request->has('id')) {
-            $notificacion = Notificacion::find($request->id);
+    // Validar el token
+    if (!$this->validateToken($request->token)) {
+        return response()->json(['mensaje' => 'Token inválido'], 401);
+    }
 
-            if (!$notificacion) {
-                return response()->json(['mensaje' => 'Notificación no encontrada'], 404);
-            }
+    // Si se pasó un ID, buscar solo esa notificación
+    if ($request->filled('id')) {
+        $notificacion = Notificacion::find($request->id);
 
-            return response()->json(['notificaciones' => [$notificacion]], 200);
+        if (!$notificacion) {
+            return response()->json(['mensaje' => 'Notificación no encontrada'], 404);
         }
 
-        $notificaciones = Notificacion::orderByDesc('fecha_envio')->get();
-
-        return response()->json(['notificaciones' => $notificaciones], 200);
+        return response()->json(['notificaciones' => [$notificacion]], 200);
     }
 
-    private function validateToken($token)
-    {
-        $accessToken = PersonalAccessToken::findToken($token);
-        return $accessToken && $accessToken->tokenable_type === 'App\Models\Usuario';
-    }
+    // Si no se pasó ID, listar todas
+    $notificaciones = Notificacion::orderByDesc('fecha_envio')->get();
+
+    return response()->json(['notificaciones' => $notificaciones], 200);
+}
 }

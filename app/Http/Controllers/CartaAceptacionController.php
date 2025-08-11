@@ -12,63 +12,42 @@ class CartaAceptacionController extends Controller
     /**
      *  Guarda la carta de aceptación recibida por parte de la empresa. Actualizar el seguimiento conforme a lo que esta en el campo de estadias seguimiento 
      */
-    public function registrarCartaAceptacion(Request $request)
-    {
-
-        $token = $request->input('token');
-        if(!$this->validateToken($token)){
-            return response()->json(['message' => 'Token inválido'], 401);
-        }
-
-        $request->validate([
-            'estadia_id' => 'required|integer|exists:estadias,id',
-            'fecha_recepcion' => 'required|date',
-            'ruta_documento' => 'required|string|max:255',
-            'observaciones' => 'nullable|string',
-        ]);
-
-        $carta = CartaAceptacion::create($request->all());
-
-        return response()->json([
-            'mensaje' => 'Carta de aceptación registrada correctamente',
-            'carta' => $carta
-        ], 201);
+   public function registrarCartaAceptacion(Request $request)
+{
+    $token = $request->input('token');
+    if(!$this->validateToken($token)){
+        return response()->json(['message' => 'Token inválido'], 401);
     }
+
+    $request->validate([
+        'estadia_id' => 'required|integer|exists:estadias,id',
+        'fecha_recepcion' => 'required|date',
+        'documento' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+        'observaciones' => 'nullable|string',
+    ]);
+
+    // Guardar el archivo en storage/app/public/cartas_aceptacion
+    $rutaArchivo = $request->file('documento')->store('cartas_aceptacion', 'public');
+
+    // Crear el registro con la ruta del archivo guardado
+    $carta = CartaAceptacion::create([
+        'estadia_id' => $request->estadia_id,
+        'fecha_recepcion' => $request->fecha_recepcion,
+        'ruta_documento' => $rutaArchivo, // Se guarda solo la ruta relativa
+        'observaciones' => $request->observaciones,
+    ]);
+
+    return response()->json([
+        'mensaje' => 'Carta de aceptación registrada correctamente',
+        'carta' => $carta
+    ], 201);
+}
+
 
     /**
-     *  Guarda la carta de aceptación con archivo en el storage. Ponerlo en la función de registrar 
+    
      */
-    public function registrarCartaConArchivo(Request $request)
-    {
-
-        $token = $request->input('token');
-        if(!$this->validateToken($token)){
-            return response()->json(['message' => 'Token inválido'], 401);
-        }
-
-        $request->validate([
-            'estadia_id' => 'required|integer|exists:estadias,id',
-            'fecha_recepcion' => 'required|date',
-            'documento' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120', // preguntar a charly
-            'observaciones' => 'nullable|string',
-        ]);
-
-        // Guardar el archivo 
-        $rutaArchivo = $request->file('documento')->store('cartas_aceptacion', 'public');
-
-        // Crear el registro con la ruta del archivo guardado
-        $carta = CartaAceptacion::create([
-            'estadia_id' => $request->estadia_id,
-            'fecha_recepcion' => $request->fecha_recepcion,
-            'ruta_documento' => $rutaArchivo,
-            'observaciones' => $request->observaciones,
-        ]);
-
-        return response()->json([
-            'mensaje' => 'Carta guardada correctamente',
-            'carta' => $carta,
-        ], 201);
-    }
+  
 
     /**
      *  Devuelve la carta de aceptación vinculada a una estadía (por Request)
