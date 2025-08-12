@@ -280,6 +280,22 @@ class UsuarioController extends Controller
         ->setStatusCode(200);
     }
 
+    //Listar todos los alumnos y devolverlos en número 
+    public function contarAlumnos(Request $request)
+    {
+        $token = $request->input('token');
+        $accessToken = PersonalAccessToken::findToken($token);
+
+        if(!$accessToken){
+            return response()->json(['message' => 'Token inválido'], 401);
+        }
+
+        //Contar alumnos
+        $count = Usuario::where('tipo_usuario', 'alumno')->count();
+
+        return response()->json(['total_alumnos' => $count], 200);
+    }
+
     public function actualizarTokenFCM(Request $request)
     {
         $request->validate([
