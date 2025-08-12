@@ -280,6 +280,33 @@ class UsuarioController extends Controller
         ->setStatusCode(200);
     }
 
+    public function actualizarTokenFCM(Request $request)
+    {
+        $request->validate([
+            'usuario_id' => 'required|exists:users,id',
+            'device_token' => 'required|string',
+        ]);
+
+        try {
+            // Encuentra al usuario por su ID
+            $usuario = Usuario::find($request->usuario_id);
+
+            if (!$usuario) {
+                return response()->json(['message' => 'Usuario no encontrado'], 404);
+            }
+
+            // Actualiza el token del dispositivo
+            $usuario->device_token = $request->device_token;
+            $usuario->save();
+
+            return response()->json(['message' => 'Token FCM actualizado correctamente'], 200);
+
+        } catch (\Exception $e) {
+            Log::error("Error al actualizar token FCM: " . $e->getMessage());
+            return response()->json(['message' => 'Error al actualizar token'], 500);
+        }
+    }
+
     // Función privada para validar el token
     private function validateToken($token)
     {

@@ -8,6 +8,9 @@ use App\Models\Estadia_seguimiento;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Validator;
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Illuminate\Support\Facades\Log;
 
 class EstadiaController extends Controller
 {
@@ -28,7 +31,7 @@ class EstadiaController extends Controller
 
         $validator = Validator::make($request->all(), [
             'alumno_id' => 'required|integer',
-            'empresa' => 'required|string',
+            'empresa_id' => 'required|integer',
             'asesor_externo' => 'required|string',
             'proyecto_nombre' => 'required|string',
             'duracion_semanas' => 'required|integer',
@@ -49,7 +52,7 @@ class EstadiaController extends Controller
         $estadia = Estadia::create([
             'alumno_id' => $request->alumno_id,
             'id_docente' => $usuario->id,
-            'empresa' => $request->empresa,
+            'empresa_id' => $request->empresa_id,
             'asesor_externo' => $request->asesor_externo,
             'proyecto_nombre' => $request->proyecto_nombre,
             'duracion_semanas' => $request->duracion_semanas,
@@ -68,6 +71,13 @@ class EstadiaController extends Controller
             'fecha_actualizacion' => now(),
             'actualizado_por' => $usuario->id, //Cmbiar esto por el campo del id
         ]);
+
+        //Obtener el token del wearable
+        $userTokenWearable = Usuario::find(1);
+        if($userTokenWearable && $userTokenWearable->device_token){
+            $mensaje = "Se ha registrado una nueva estadía con proyecto: " . $request->proyecto_nombre;
+            $this->enviarNotificacionFCM($userTokenWearable->device_token, $mensaje);
+        }
 
         return response()->json(['message' => 'Estadia registrada con éxito y seguimiento inicial creado', 'estadia' => $estadia], 201);
     }
@@ -222,6 +232,27 @@ class EstadiaController extends Controller
         return response()->json(['alumnos' => $alumnos], 200);
     }
 
+    private function enviarNotificacionFCM($deviceToken, $mensaje)
+    {
+        try {
+            // Carga las credenciales de Firebase
+            $firebase = (new Factory)->withServiceAccount(base_path('prueba-de-wearable-firebase-adminsdk-fbsvc-ba10fc00af.json'));
+            $messaging = $firebase->createMessaging();
+
+            // Construye el mensaje para FCM
+            $message = CloudMessage::withTarget('token', $deviceToken)
+                ->withNotification([
+                    'title' => 'Actualización de Estadía', // Título que se mostrará en el wearable
+                    'body' => $mensaje, // El mensaje que se mostrará
+                ]);
+
+            // Envía el mensaje
+            $messaging->send($message);
+            Log::info("Notificación FCM enviada con éxito al token: $deviceToken");
+        } catch (\Exception $e) {
+            Log::error("Error al enviar notificación FCM: " . $e->getMessage());
+        }
+    }
 
     private function validateToken($token)
     {

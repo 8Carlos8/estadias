@@ -14,7 +14,7 @@ class Estadia extends Model
     protected $fillable = [
         'alumno_id',
         'id_docente',
-        'empresa',
+        'empresa_id',
         'asesor_externo',
         'proyecto_nombre',
         'duracion_semanas',
@@ -29,5 +29,10 @@ class Estadia extends Model
     {
         return $this->belongsTo(User::class, 'alumno_id');
     }
+
     //Agregar la llave pa que se relacione con la empresa con la tabla de los datos dummy XD
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class, 'empresa_id');
+    }
 }
