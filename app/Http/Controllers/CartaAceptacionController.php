@@ -43,12 +43,6 @@ class CartaAceptacionController extends Controller
     ], 201);
 }
 
-
-    /**
-    
-     */
-  
-
     /**
      *  Devuelve la carta de aceptación vinculada a una estadía (por Request)
      */
@@ -150,6 +144,21 @@ class CartaAceptacionController extends Controller
         $cartas = CartaAceptacion::orderBy('id')->get(); // Orden por id
 
         return response()->json(['cartas_aceptacion' => $cartas], 200);
+    }
+
+    public function contarCartasAcep(Request $request)
+    {
+        $token = $request->input('token');
+        $accessToken = PersonalAccessToken::findToken($token);
+
+        if (!$accessToken) {
+            return response()->json(['message' => 'Token inválido'], 401);
+        }
+
+        // Contar cartas
+        $count = CartaAceptacion::count();
+
+        return response()->json(['total_cartasAcep' => $count], 200);
     }
 
     private function validateToken($token)

@@ -14,6 +14,7 @@ use App\Http\Controllers\RegistrarIncidenciaController;
 use App\Http\Controllers\AgregarDocumentoExtraController;
 use App\Http\Controllers\ProgramarVisitaController;
 use App\Http\Controllers\EmpresaController;
+use App\Http\Controllers\CartaTerminacionController;
 
 
 /*
@@ -146,7 +147,17 @@ Route::prefix('verifi')->group(function (){
 });
 
 Route::prefix('empresa')->group(function (){
-    Route::post('/verEmpresa', [VerificacionDocumentoController::class, 'verEmpresa']);
-    Route::post('/listaEmpresas', [VerificacionDocumentoController::class, 'listaEmpresas']);
-    Route::post('/contarEmpresas', [VerificacionDocumentoController::class, 'contarEmpresas']);
+    Route::post('/verEmpresa', [EmpresaController::class, 'verEmpresa']);
+    Route::post('/listaEmpresas', [EmpresaController::class, 'listaEmpresas']);
+    Route::post('/contarEmpresas', [EmpresaController::class, 'contarEmpresas']);
+});
+
+Route::prefix('cartaTer')->group(function (){
+    Route::post('/register', [CartaTerminacionController::class, 'register']);
+    Route::post('/update', [CartaTerminacionController::class, 'update']);
+    Route::post('/delete', [CartaTerminacionController::class, 'delete']);
+    Route::post('/verCartaTer', [CartaTerminacionController::class, 'verCartaTer']);
+    Route::post('/listaCartasTer', [CartaTerminacionController::class, 'listaCartasTer']);
+    Route::post('/descargarCartaTer', [CartaTerminacionController::class, 'descargarCartaTer']);
+    Route::post('/contarCartasTer', [CartaTerminacionController::class, 'contarCartasTer']);
 });

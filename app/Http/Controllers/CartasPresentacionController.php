@@ -84,9 +84,13 @@ class CartasPresentacionController extends Controller
     {
     
         $token = $request->input('token');
-        if(!$this->validateToken($token)){
+        $accessToken = PersonalAccessToken::findToken($token);
+
+        if (!$accessToken) {
             return response()->json(['message' => 'Token inválido'], 401);
         }
+
+        $usuario = $accessToken->tokenable;
 
         $cartaPres = Cartas_presentacion::find($request->input('id'));
 
@@ -96,7 +100,6 @@ class CartasPresentacionController extends Controller
 
         $validator = Validator::make($request->all(), [
             'estadia_id' => 'sometimes|integer',
-            'tutor_id' => 'sometimes|integer',
             'fecha_emision' => 'sometimes|date',
             'ruta_documento' => 'sometimes|file', // archivo opcional
         ]);
@@ -126,7 +129,7 @@ class CartasPresentacionController extends Controller
 
         // Actualizar otros campos
         if ($request->has('estadia_id')) $cartaPres->estadia_id = $request->estadia_id;
-        if ($request->has('tutor_id')) $cartaPres->tutor_id = $request->tutor_id;
+        if ($request->has('tutor_id')) $cartaPres->tutor_id = $usuario->id;
         if ($request->has('fecha_emision')) $cartaPres->fecha_emision = $request->fecha_emision;
 
         $cartaPres->save();
@@ -293,6 +296,21 @@ class CartasPresentacionController extends Controller
         $url = asset('storage/' . $ruta);
 
         return response()->json(['url_descarga' => $url], 200);
+    }
+
+    public function contarCartasPres(Request $request)
+    {
+        $token = $request->input('token');
+        $accessToken = PersonalAccessToken::findToken($token);
+
+        if (!$accessToken) {
+            return response()->json(['message' => 'Token inválido'], 401);
+        }
+
+        // Contar cartas
+        $count = Cartas_presentacion::count();
+
+        return response()->json(['total_cartasPres' => $count], 200);
     }
 
     private function validateToken($token)
