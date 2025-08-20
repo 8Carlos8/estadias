@@ -12,12 +12,10 @@ class VerificacionDocumentoController extends Controller
 {
     public function register(Request $request)
     {
-        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         $validator = Validator::make($request->all(), [
             'usuario_id' => 'required|integer',
@@ -48,12 +46,10 @@ class VerificacionDocumentoController extends Controller
 
     public function update(Request $request)
     {
-        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         $verificacion = Verificacion_documento::find($request->input('id'));
 
@@ -67,12 +63,10 @@ class VerificacionDocumentoController extends Controller
 
     public function delete(Request $request)
     {
-        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         $verificacion = Verificacion_documento::find($request->input('id'));
 
@@ -86,12 +80,10 @@ class VerificacionDocumentoController extends Controller
 
     public function verVerificacion(Request $request)
     {
-        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         $id = $request->input('id');
 
@@ -105,12 +97,10 @@ class VerificacionDocumentoController extends Controller
 
     public function listaVerificaciones(Request $request)
     {
-        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         try {
             $verificaciones = Verificacion_documento::all();
@@ -123,12 +113,10 @@ class VerificacionDocumentoController extends Controller
 
     public function VerificacionesUsuario(Request $request)
     {
-        /*
         $token = $request->input('token');
         if (!$this->validateToken($token)) {
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         $usuario_id = $request->input('usuario_id');
 
@@ -139,6 +127,47 @@ class VerificacionDocumentoController extends Controller
         }
 
         return response()->json(['verificaciones' => $verificaciones], 200);
+    }
+
+    //función de contar documentos pendientes
+    public function contarDocPendientes(Request $request)
+    {
+        $token = $request->input('token');
+        if (!$this->validateToken($token)) {
+            return response()->json(['message' => 'Token inválido'], 401);
+        }
+
+        $pendientes = Verificacion_documento::whereNull('resultado')
+                        ->orWhere('resultado', false)
+                        ->count();
+
+        return response()->json(['total_pendientes' => $pendientes], 200);
+    }
+
+    //función de contar documentos verificados
+    public function contarDocVerificados(Request $request)
+    {
+        $token = $request->input('token');
+        if (!$this->validateToken($token)) {
+            return response()->json(['message' => 'Token inválido'], 401);
+        }
+
+        $verificados = Verificacion_documentos::where('resultado', true)->count();
+
+        return response()->json(['total_verificados' => $verificacion], 200);
+    }
+
+    //función de contar documentos urgentes
+    public function contarDocUrgentes(Request $request)
+    {
+        $token = $request->input('token');
+        if (!$this->validateToken($token)) {
+            return response()->json(['message' => 'Token inválido'], 401);
+        }
+
+        $urgentes = Verificacion_documento::where('urgente', true)->count();
+
+        return response()->json(['total_urgente' => $urgentes], 200);
     }
 
     private function validateToken($token)

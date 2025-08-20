@@ -323,6 +323,21 @@ class UsuarioController extends Controller
         }
     }
 
+    public function listarAlumnos(Request $request)
+    {
+        $token = $request->input('token');
+        $accessToken = PersonalAccessToken::findToken($token);
+
+        if(!$accessToken){
+            return response()->json(['message' => 'Token inválido'], 401);
+        }
+
+        //Listar alumnos
+        $alumnos = Usuario::where('tipo_usuario', 'alumno');
+
+        return response()->json(['alumnos' => $alumnos], 200);
+    }
+
     // Función privada para validar el token
     private function validateToken($token)
     {

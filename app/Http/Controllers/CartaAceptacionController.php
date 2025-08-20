@@ -158,6 +158,21 @@ class CartaAceptacionController extends Controller
         // Contar cartas
         $count = CartaAceptacion::count();
 
+        //Devolver los alumnos
+        $alunmnos = Usuario::whereIn('id', function ($query){
+            $query->select('usuario_id')
+                ->from('estadia')
+                ->whereIm('id', function ($sub){
+                    $sub->select('estadias_id')
+                        ->from('cartas_presentacion');
+                });
+        })->get();
+
+        //Construir arreglo con los nombres completos
+        $nombresAlumnos = $alunmnos->map(function ($alumno){
+            return $alumno->nombre . ' ' . $alumno->apellido_paterno . ' ' . $alumno->apellido_materno;
+        });
+
         return response()->json(['total_cartasAcep' => $count], 200);
     }
 

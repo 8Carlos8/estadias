@@ -55,6 +55,8 @@ Route::prefix('cartas')->group(function () {
     Route::post('/actualizar', [CartaAceptacionController::class, 'update']);
     Route::post('/eliminar', [CartaAceptacionController::class, 'destroy']);
     Route::post('/listar', [CartaAceptacionController::class, 'listarTodas']);
+    Route::post('/contarCartasAcep', [CartaAceptacionController::class, 'contarCartasAcep']);
+    Route::post('/listarAlumnos', [CartaAceptacionController::class, 'listarAlumnos']);
 });
 
 // Notificaciones
@@ -124,7 +126,7 @@ Route::prefix('cartaPres')->group(function (){
     Route::post('/listaCartasPres', [CartasPresentacionController::class, 'listaCartasPres']);
     Route::post('/firmaCartaPres', [CartasPresentacionController::class, 'firmaCartaPres']);
     Route::post('/descargarCartaPres', [CartasPresentacionController::class, 'descargarCartaPres']);
-    Route::post('/contarCartasFirmar', [CartasPresentacionController::class, 'contarCartasFirmar']);
+    Route::post('/contarCartasPres', [CartasPresentacionController::class, 'contarCartasPres']);
 });
 
 //Rutas de Seguimiento de Estadia
@@ -144,6 +146,9 @@ Route::prefix('verifi')->group(function (){
     Route::post('/verVerificacion', [VerificacionDocumentoController::class, 'verVerificacion']);
     Route::post('/listaVerificaciones', [VerificacionDocumentoController::class, 'listaVerificaciones']);
     Route::post('/VerificacionesUsuario', [VerificacionDocumentoController::class, 'VerificacionesUsuario']);
+    Route::post('/contarDocPendientes', [VerificacionDocumentoController::class, 'contarDocPendientes']);
+    Route::post('/contarDocVerificados', [VerificacionDocumentoController::class, 'contarDocVerificados']);
+    Route::post('/contarDocUrgentes', [VerificacionDocumentoController::class, 'contarDocUrgentes']);
 });
 
 Route::prefix('empresa')->group(function (){

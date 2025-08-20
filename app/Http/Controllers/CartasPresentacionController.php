@@ -310,7 +310,22 @@ class CartasPresentacionController extends Controller
         // Contar cartas
         $count = Cartas_presentacion::count();
 
-        return response()->json(['total_cartasPres' => $count], 200);
+        //Devolver los alumnos
+        $alunmnos = Usuario::whereIn('id', function ($query){
+            $query->select('usuario_id')
+                ->from('estadia')
+                ->whereIm('id', function ($sub){
+                    $sub->select('estadias_id')
+                        ->from('cartas_presentacion');
+                });
+        })->get();
+
+        //Construir arreglo con los nombres completos
+        $nombresAlumnos = $alunmnos->map(function ($alumno){
+            return $alumno->nombre . ' ' . $alumno->apellido_paterno . ' ' . $alumno->apellido_materno;
+        });
+
+        return response()->json(['total_cartasPres' => $count, 'total_alumnos' => $nombresAlumnos->count(), 'nombres_alumnos' => $nombresAlumnos], 200);
     }
 
     private function validateToken($token)
