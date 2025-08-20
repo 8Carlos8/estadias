@@ -13,12 +13,10 @@ class AgregarDocumentoExtraController extends Controller
 {
     public function register(Request $request)
     {
-        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
         
         $validator = Validator::make($request->all(), [
             'estadia_id' => 'required|integer',
@@ -52,12 +50,10 @@ class AgregarDocumentoExtraController extends Controller
 
     public function update(Request $request)
     {
-        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         $docExtra = AgregarDocumentoExtra::find($request->input('id'));
 
@@ -106,12 +102,10 @@ class AgregarDocumentoExtraController extends Controller
 
     public function delete(Request $request)
     {
-        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         $docExtra = AgregarDocumentoExtra::find($request->input('id'));
 
@@ -130,12 +124,10 @@ class AgregarDocumentoExtraController extends Controller
 
     public function verDocExtra(Request $request)
     {
-        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         $id = $request->input('id');
 
@@ -150,12 +142,10 @@ class AgregarDocumentoExtraController extends Controller
 
     public function listaDocExtra(Request $request)
     {
-        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         try {
             $docExtras = AgregarDocumentoExtra::all();

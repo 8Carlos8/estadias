@@ -12,12 +12,10 @@ class ProgramarVisitaController extends Controller
 {
     public function register(Request $request)
     {
-        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         $validator = Validator::make($request->all(), [
             'estadia_id' => 'required|integer',
@@ -46,12 +44,10 @@ class ProgramarVisitaController extends Controller
 
     public function update(Request $request)
     {
-        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         $visita = ProgramarVisita::find($request->input('id'));
 
@@ -65,11 +61,10 @@ class ProgramarVisitaController extends Controller
 
     public function delete(Request $request)
     {
-        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
-        } */
+        }
 
         $visita = ProgramarVisita::find($request->input('id'));
 
@@ -83,12 +78,10 @@ class ProgramarVisitaController extends Controller
 
     public function verVisita(Request $request)
     {
-        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         $id = $request->input('id');
 
@@ -103,12 +96,10 @@ class ProgramarVisitaController extends Controller
 
     public function listaVisitas(Request $request)
     {
-        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         try {
             $visitas = ProgramarVisita::all();

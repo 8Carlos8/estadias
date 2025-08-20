@@ -12,12 +12,10 @@ class EstadiaSeguimientoController extends Controller
 {
     public function register(Request $request)
     {
-        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         $validator = Validator::make($request->all(), [
             'estadia_id' => 'required|integer',
@@ -50,12 +48,10 @@ class EstadiaSeguimientoController extends Controller
 
     public function update(Request $request)
     {
-        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         $seguimiento = Estadia_seguimiento::find($request->input('id'));
 
@@ -69,12 +65,10 @@ class EstadiaSeguimientoController extends Controller
 
     public function delete(Request $request)
     {
-        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         $seguimiento = Estadia_seguimiento::find($request->input('id'));
 
@@ -88,12 +82,10 @@ class EstadiaSeguimientoController extends Controller
 
     public function verSeguimiento(Request $request)
     {
-        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         $id = $request->input($id);
 
@@ -107,12 +99,10 @@ class EstadiaSeguimientoController extends Controller
 
     public function listaSeguimientos(Request $request)
     {
-        /*
         $token = $request->input('token');
         if(!$this->validateToken($token)){
             return response()->json(['message' => 'Token inválido'], 401);
         }
-            */
 
         try {
             $seguimientos = Estadia_seguimiento::all();

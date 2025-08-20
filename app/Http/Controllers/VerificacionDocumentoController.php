@@ -22,7 +22,7 @@ class VerificacionDocumentoController extends Controller
             'tipo_validacion' => 'required|integer',
             //'resultado' => '',
             'fecha_validacion'=> 'required|date',
-            'observaciones' => 'required|string',
+            'observaciones' => 'string',
         ]);
 
         if($validator->fails()){

@@ -86,8 +86,8 @@ Route::prefix('estadia')->group(function (){
     Route::post('/listaEstadias', [EstadiaController::class, 'listaEstadias']);
     Route::post('/estadiasPorDocente', [EstadiaController::class, 'estadiasPorDocente']);
     Route::post('/contarEstadiasDocente', [EstadiaController::class, 'contarEstadiasDocente']);
-    Route::post('/estadiasPorDocente', [EstadiaController::class, 'estadiasPorDocente']);
     Route::post('/contarEstadias', [EstadiaController::class, 'contarEstadias']);
+    Route::post('/alumnosPorDocente', [EstadiaController::class, 'alumnosPorDocente']);
 });
 
 //Rutas de Incidencia
