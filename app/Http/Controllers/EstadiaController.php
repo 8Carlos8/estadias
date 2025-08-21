@@ -136,6 +136,34 @@ class EstadiaController extends Controller
         return response()->json(['estadia' => $estadia], 200);
     }
 
+    public function verEstadiaAlumno(Request $request)
+    {
+        $token = $request->input('token');
+
+        // Obtener el usuario desde el token
+        $accessToken = PersonalAccessToken::findToken($token);
+        if (!$accessToken || $accessToken->tokenable_type !== 'App\Models\Usuario') {
+            return response()->json(['message' => 'Token inválido'], 401);
+        }
+
+        $usuario = $accessToken->tokenable;
+
+        // Obtener el ID del usuario (alumno)
+        $usuario_id = $request->input('usuario_id');
+        if (!$usuario_id) {
+            return response()->json(['message' => 'Se requiere el ID del usuario'], 400);
+        }
+
+        // Buscar la estadía del alumno
+        $estadia = Estadia::where('alumno_id', $usuario_id)->first();
+
+        if (!$estadia) {
+            return response()->json(['message' => 'Estadía no encontrada para este usuario'], 404);
+        }
+
+        return response()->json(['estadia' => $estadia], 200);
+    }
+
     public function listaEstadias(Request $request)
     {
         

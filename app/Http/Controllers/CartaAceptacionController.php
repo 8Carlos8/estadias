@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\CartaAceptacion;
+use App\Models\carta_aceptacion;
 use App\Models\Estadia;
+use App\Models\Usuario;
+use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Storage; 
 
 class CartaAceptacionController extends Controller
@@ -156,15 +158,15 @@ class CartaAceptacionController extends Controller
         }
 
         // Contar cartas
-        $count = CartaAceptacion::count();
+        $count = carta_aceptacion::count();
 
         //Devolver los alumnos
         $alunmnos = Usuario::whereIn('id', function ($query){
-            $query->select('usuario_id')
-                ->from('estadia')
-                ->whereIm('id', function ($sub){
-                    $sub->select('estadias_id')
-                        ->from('cartas_presentacion');
+            $query->select('alumno_id')
+                ->from('estadias')
+                ->whereIn('id', function ($sub){
+                    $sub->select('estadia_id')
+                        ->from('carta_aceptacions');
                 });
         })->get();
 
@@ -173,7 +175,7 @@ class CartaAceptacionController extends Controller
             return $alumno->nombre . ' ' . $alumno->apellido_paterno . ' ' . $alumno->apellido_materno;
         });
 
-        return response()->json(['total_cartasAcep' => $count], 200);
+        return response()->json(['total_cartasAcep' => $count, 'nombres_alumnos' => $nombresAlumnos], 200);
     }
 
     private function validateToken($token)

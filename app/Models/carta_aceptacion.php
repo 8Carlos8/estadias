@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CartaAceptacion extends Model
+class carta_aceptacion extends Model
 {
-    protected $table = 'cartas_aceptacions';
+    protected $table = 'carta_aceptacions';
 
      protected $fillable = [
         'estadia_id',

@@ -312,13 +312,14 @@ class CartasPresentacionController extends Controller
 
         //Devolver los alumnos
         $alunmnos = Usuario::whereIn('id', function ($query){
-            $query->select('usuario_id')
-                ->from('estadia')
-                ->whereIm('id', function ($sub){
-                    $sub->select('estadias_id')
-                        ->from('cartas_presentacion');
+            $query->select('alumno_id')
+                ->from('estadias')
+                ->whereIn('id', function ($sub){
+                    $sub->select('estadia_id')
+                        ->from('cartas_presentacions');
                 });
         })->get();
+
 
         //Construir arreglo con los nombres completos
         $nombresAlumnos = $alunmnos->map(function ($alumno){

@@ -246,21 +246,21 @@ class CartaTerminacionController extends Controller
         $count = CartaTerminacion::count();
 
         //Devolver los alumnos
-        $alunmnos = Usuario::whereIn('id', function ($query){
-            $query->select('usuario_id')
-                ->from('estadia')
-                ->whereIm('id', function ($sub){
-                    $sub->select('estadias_id')
-                        ->from('cartas_presentacion');
+        $alumnos = Usuario::whereIn('id', function ($query) {
+            $query->select('alumno_id')
+                ->from('estadias')
+                ->whereIn('id', function ($sub) {
+                    $sub->select('estadia_id')
+                        ->from('carta_terminacions');
                 });
         })->get();
 
         //Construir arreglo con los nombres completos
-        $nombresAlumnos = $alunmnos->map(function ($alumno){
+        $nombresAlumnos = $alumnos->map(function ($alumno){
             return $alumno->nombre . ' ' . $alumno->apellido_paterno . ' ' . $alumno->apellido_materno;
         });
 
-        return response()->json(['total_cartasTer' => $count], 200);
+        return response()->json(['total_cartasTer' => $count, 'nombres_alumnos' => $nombresAlumnos], 200);
     }
 
     private function validateToken($token)

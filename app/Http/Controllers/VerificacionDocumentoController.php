@@ -152,9 +152,9 @@ class VerificacionDocumentoController extends Controller
             return response()->json(['message' => 'Token inválido'], 401);
         }
 
-        $verificados = Verificacion_documentos::where('resultado', true)->count();
+        $verificados = Verificacion_documento::where('resultado', true)->count();
 
-        return response()->json(['total_verificados' => $verificacion], 200);
+        return response()->json(['total_verificados' => $verificados], 200);
     }
 
     //función de contar documentos urgentes

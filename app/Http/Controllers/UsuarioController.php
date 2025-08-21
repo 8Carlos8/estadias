@@ -291,7 +291,7 @@ class UsuarioController extends Controller
         }
 
         //Contar alumnos
-        $count = Usuario::where('tipo_usuario', 'alumno')->count();
+        $count = Usuario::where('tipo_usuario', 'estudiante')->count();
 
         return response()->json(['total_alumnos' => $count], 200);
     }
