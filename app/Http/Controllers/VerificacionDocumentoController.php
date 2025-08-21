@@ -165,7 +165,7 @@ class VerificacionDocumentoController extends Controller
             return response()->json(['message' => 'Token inválido'], 401);
         }
 
-        $urgentes = Verificacion_documento::where('urgente', true)->count();
+        $urgentes = Verificacion_documento::where('resultado', false)->count();
 
         return response()->json(['total_urgente' => $urgentes], 200);
     }
